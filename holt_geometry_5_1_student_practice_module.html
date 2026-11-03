@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometry Module - Section 5.1 Perimeter & Area</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MathJax for LaTeX Rendering -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <style>
+        #laser-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(37, 99, 235, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(37, 99, 235, 0.4); }
+        }
+        .token-glow {
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col font-sans selection:bg-blue-600 selection:text-white">
+
+    <!-- Laser Celebration Canvas -->
+    <canvas id="laser-canvas"></canvas>
+
+    <!-- Header Navigation -->
+    <header class="bg-white/95 border-b border-slate-200 sticky top-0 z-30 backdrop-blur-md shadow-sm">
+        <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-600 text-white p-2.5 rounded-xl font-bold text-lg shadow-md shadow-blue-600/20">
+                    <i class="fa-solid fa-shapes"></i>
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-extrabold text-slate-900 leading-tight">Geometry Practice Module</h1>
+                    <span class="text-xs text-blue-600 font-semibold">Holt Geometry 5.1 • Perimeter & Area</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <div class="bg-slate-100 border border-slate-300 rounded-xl px-3 py-1.5 flex items-center gap-2 text-xs font-bold text-slate-700">
+                    <i class="fa-solid fa-list-check text-blue-600"></i>
+                    <span>Score: <strong id="score-counter" class="text-blue-600">0</strong> / 13</span>
+                </div>
+                <button onclick="triggerLaserShow()" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-md shadow-blue-600/20 transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-bolt-lightning"></i> Test Laser
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6 space-y-6">
+
+        <!-- Student Name & Info Banner -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-100 pb-3">
+                <div>
+                    <h2 class="text-xl font-black text-slate-900">Section 5.1: Perimeter and Area</h2>
+                    <p class="text-xs text-slate-500 font-medium">Reference diagrams and figures directly in <strong>Holt Geometry Section 5.1</strong>.</p>
+                </div>
+                <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-extrabold border border-blue-200">13 Assigned Problems</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1" for="student-first-name">First Name <span class="text-rose-500">*</span></label>
+                    <input type="text" id="student-first-name" placeholder="Enter first name..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 font-medium focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1" for="student-last-name">Last Name <span class="text-rose-500">*</span></label>
+                    <input type="text" id="student-last-name" placeholder="Enter last name..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 font-medium focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem #5 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q1">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 1 (#5 - Guided Skills Practice)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q1">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Refer to the L-shaped polygon under <em>Guided Skills Practice #5</em> in <strong>Holt Geometry 5.1</strong>.</p>
+            <p class="text-sm font-semibold text-slate-900 mb-4">Find the perimeter of the figure at right.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q1" placeholder="Enter numerical answer..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q1')" id="btn-q1" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #5
+                </button>
+            </div>
+            <div id="feedback-q1" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #6 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q2">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 2 (#6 - Guided Skills Practice)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q2">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Refer to the L-shaped polygon under <em>Guided Skills Practice #6</em> in <strong>Holt Geometry 5.1</strong>.</p>
+            <p class="text-sm font-semibold text-slate-900 mb-4">Find the area of the figure at right.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q2" placeholder="Enter numerical answer..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q2')" id="btn-q2" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #6
+                </button>
+            </div>
+            <div id="feedback-q2" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #8 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q3">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 3 (#8 - Practice and Apply)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q3">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">What is the minimum perimeter of a rectangular region with an area of $900\text{ sq ft}$?</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q3" placeholder="Enter answer..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q3')" id="btn-q3" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #8
+                </button>
+            </div>
+            <div id="feedback-q3" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #10 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q4">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 4 (#10 - Exercises 9-18 Figure)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q4">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Refer to the multi-rectangle figure and given measurements for Exercises 9–18 in <strong>Holt Geometry 5.1</strong> ($AD = 15\text{ in.}$, $DL = 11\text{ in.}$, $AC = 13\text{ in.}$, $EI = 3\text{ in.}$, $BD = 10\text{ in.}$, $CH = 4\text{ in.}$).</p>
+            <p class="text-sm font-semibold text-slate-900 mb-4">Find the area of rectangle $ADLI$.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q4" placeholder="Enter answer..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q4')" id="btn-q4" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #10
+                </button>
+            </div>
+            <div id="feedback-q4" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #12 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q5">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 5 (#12 - Exercises 9-18 Figure)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q5">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Refer to the multi-rectangle figure for Exercises 9–18 in <strong>Holt Geometry 5.1</strong>.</p>
+            <p class="text-sm font-semibold text-slate-900 mb-4">Find the area of rectangle $CDLK$.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q5" placeholder="Enter answer..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q5')" id="btn-q5" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #12
+                </button>
+            </div>
+            <div id="feedback-q5" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #14 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q6">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 6 (#14 - Exercises 9-18 Figure)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q6">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Refer to the multi-rectangle figure for Exercises 9–18 in <strong>Holt Geometry 5.1</strong>.</p>
+            <p class="text-sm font-semibold text-slate-900 mb-4">Find the area of hexagon $GHCDLJ$.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q6" placeholder="Enter answer..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q6')" id="btn-q6" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #14
+                </button>
+            </div>
+            <div id="feedback-q6" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #16 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q7">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 7 (#16 - Exercises 9-18 Figure)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q7">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Refer to the multi-rectangle figure for Exercises 9–18 in <strong>Holt Geometry 5.1</strong>.</p>
+            <p class="text-sm font-semibold text-slate-900 mb-4">Find the area of rectangle $BCHG$.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q7" placeholder="Enter answer..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q7')" id="btn-q7" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #16
+                </button>
+            </div>
+            <div id="feedback-q7" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #18 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q8">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 8 (#18 - Exercises 9-18 Figure)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q8">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Refer to the multi-rectangle figure for Exercises 9–18 in <strong>Holt Geometry 5.1</strong>.</p>
+            <p class="text-sm font-semibold text-slate-900 mb-4">If points $I$ and $D$ were connected by a segment, what would be the area of $\Delta ADI$?</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q8" placeholder="Enter answer..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q8')" id="btn-q8" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #18
+                </button>
+            </div>
+            <div id="feedback-q8" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #20 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q9">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 9 (#20 - Coordinate Area)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q9">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Find the area of the rectangle with vertices at the given points: $(0, 0)$, $(0, 2)$, $(5, 0)$, $(5, 2)$.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q9" placeholder="Enter answer..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q9')" id="btn-q9" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #20
+                </button>
+            </div>
+            <div id="feedback-q9" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #22 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q10">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 10 (#22 - Coordinate Area)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q10">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">Find the area of the rectangle with vertices at the given points: $(-2, -5)$, $(-2, 3)$, $(4, -5)$, $(4, 3)$.</p>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <input type="text" id="input-q10" placeholder="Enter answer..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <button onclick="checkQuestion('q10')" id="btn-q10" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #22
+                </button>
+            </div>
+            <div id="feedback-q10" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #24 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q11">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 11 (#24 - Algebraic Dimensions)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q11">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">The perimeter of a rectangle is $72\text{ cm}$. The base is $3$ times the height. What are the dimensions of the rectangle? What is the area?</p>
+            <div class="space-y-3 mb-3">
+                <input type="text" id="input-q11a" placeholder="Dimensions (e.g. h = 9 cm, b = 27 cm)..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <input type="text" id="input-q11b" placeholder="Area (e.g. 243 cm²)..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+            </div>
+            <div class="flex justify-end">
+                <button onclick="checkQuestion('q11')" id="btn-q11" class="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #24
+                </button>
+            </div>
+            <div id="feedback-q11" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #26 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q12">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 12 (#26 - Algebraic Dimensions)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q12">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">The perimeter of a rectangle is $80x$. The base is $7$ times the height. In terms of $x$, what are the dimensions of the rectangle? What is the area?</p>
+            <div class="space-y-3 mb-3">
+                <input type="text" id="input-q12a" placeholder="Dimensions in terms of x (e.g. h = 5x, b = 35x)..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <input type="text" id="input-q12b" placeholder="Area in terms of x (e.g. 175x²)..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+            </div>
+            <div class="flex justify-end">
+                <button onclick="checkQuestion('q12')" id="btn-q12" class="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #26
+                </button>
+            </div>
+            <div id="feedback-q12" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Problem #28 -->
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm transition-all" id="card-q13">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Problem 13 (#28 - Function Analysis)</span>
+                <span class="text-xs text-slate-400 font-medium" id="status-q13">Attempts left: 2</span>
+            </div>
+            <p class="text-sm text-slate-800 mb-3">For a rectangle with a fixed perimeter of $100$, $2b + 2h = 100$. Solve this equation for $h$ or $b$. What type of function represents this relationship?</p>
+            <div class="space-y-3 mb-3">
+                <input type="text" id="input-q13a" placeholder="Solved equation (e.g. h = 50 - b)..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+                <input type="text" id="input-q13b" placeholder="Function type (e.g. Linear)..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-blue-600 focus:bg-white transition-all">
+            </div>
+            <div class="flex justify-end">
+                <button onclick="checkQuestion('q13')" id="btn-q13" class="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Submit #28
+                </button>
+            </div>
+            <div id="feedback-q13" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+        </div>
+
+        <!-- Finish Button -->
+        <div class="py-6 flex justify-center">
+            <button onclick="generateCompletionModal()" class="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold rounded-2xl text-base shadow-xl shadow-blue-600/30 transition-all transform hover:scale-105 flex items-center justify-center gap-3">
+                <i class="fa-solid fa-award"></i> Submit Completed Module & View Grade Token
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Modal Pop-Up Grade Token View -->
+    <div id="completion-modal" class="hidden fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-xl w-full p-6 sm:p-8 border border-slate-200 text-center space-y-5 transform transition-all">
+            
+            <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-3xl mx-auto border border-blue-100 shadow-sm">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+
+            <div>
+                <h3 class="text-2xl font-black text-slate-900">Module Completed!</h3>
+                <p id="modal-student-name" class="text-sm font-semibold text-blue-600">Student: Anonymous</p>
+                <span id="modal-score-badge" class="inline-block px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-xs font-bold mt-2">
+                    Score: 0 / 13 (0%)
+                </span>
+            </div>
+
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-left space-y-2">
+                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Official Grade Verification Token</label>
+                <div class="flex items-center gap-2 bg-white p-3 rounded-xl border border-slate-300 font-mono text-xs font-bold text-slate-800 break-all select-all">
+                    <span id="token-display">MATH-GRADE::...</span>
+                </div>
+                <button onclick="copyTokenToClipboard()" id="copy-token-btn" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-copy"></i> Copy Token to Clipboard
+                </button>
+            </div>
+
+            <div class="bg-blue-50/70 p-4 rounded-2xl border border-blue-100 text-left space-y-2 text-xs text-slate-700">
+                <h4 class="font-extrabold text-blue-900 flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-info"></i> Instructions to Submit to Dr. Swick:
+                </h4>
+                <ol class="list-decimal list-inside space-y-1 font-medium text-slate-600">
+                    <li>Click <strong>"Copy Token to Clipboard"</strong> above.</li>
+                    <li>Open your <strong>Google Classroom</strong> course assignment page.</li>
+                    <li>Paste the token string into the <strong>Private Comments</strong> box and click <strong>Submit / Turn In</strong>.</li>
+                </ol>
+            </div>
+
+            <div class="pt-2">
+                <button onclick="closeCompletionModal()" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all">
+                    Close Window
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Script -->
+    <script>
+        const canvas = document.getElementById('laser-canvas');
+        const ctx = canvas.getContext('2d');
+        let animId = null;
+        let moduleStartTime = Date.now();
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let audioCtx = null;
+        function playLaserSound() {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(1600, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(70, audioCtx.currentTime + 0.12);
+
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.12);
+            } catch (e) {
+                console.log("Audio play blocked by browser policy until interaction.");
+            }
+        }
+
+        function triggerLaserShow() {
+            if (animId) {
+                cancelAnimationFrame(animId);
+                animId = null;
+            }
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const colors = ['#2563eb', '#3b82f6', '#06b6d4', '#10b981', '#a855f7', '#f43f5e'];
+            let count = 0;
+
+            const interval = setInterval(() => {
+                playLaserSound();
+                if (count > 25) {
+                    clearInterval(interval);
+                    setTimeout(() => ctx.clearRect(0, 0, canvas.width, canvas.height), 500);
+                    return;
+                }
+
+                ctx.save();
+                ctx.strokeStyle = colors[Math.floor(Math.random() * colors.length)];
+                ctx.lineWidth = Math.random() * 8 + 3;
+                ctx.shadowColor = ctx.strokeStyle;
+                ctx.shadowBlur = 25;
+
+                ctx.beginPath();
+                if (Math.random() > 0.5) {
+                    ctx.moveTo(Math.random() * canvas.width, 0);
+                    ctx.lineTo(Math.random() * canvas.width, canvas.height);
+                } else {
+                    ctx.moveTo(0, Math.random() * canvas.height);
+                    ctx.lineTo(canvas.width, Math.random() * canvas.height);
+                }
+                ctx.stroke();
+                ctx.restore();
+
+                count++;
+            }, 90);
+        }
+
+        // State Tracking & Worked Solutions
+        const qState = {
+            q1: { 
+                attemptsLeft: 2, 
+                isCorrect: false, 
+                hint: "Hint: Sum all outer side lengths around the boundary of the figure.", 
+                worked: `<div class="space-y-1"><strong class="text-slate-900 block border-b border-rose-200 pb-1">Step-by-Step Worked Solution:</strong><p>Perimeter is the total distance around the boundary of a figure:</p><p>$$P = 4 + 2.5 + 2.5 + 1.5 + 5.5 + 5 = 21\\text{ units}$$</p></div>` 
+            },
+            q2: { 
+                attemptsLeft: 2, 
+                isCorrect: false, 
+                hint: "Hint: Decompose the L-shaped region into non-overlapping simpler rectangles and add their areas.", 
+                worked: `<div class="space-y-1"><strong class="text-slate-900 block border-b border-rose-200 pb-1">Step-by-Step Worked Solution:</strong><p>Decompose the polygon into two simpler sub-rectangles:</p><p>$$\\text{Area} = (4 \\times 2.5) + (4.5 \\times 1.5) = 10 + 6.75 = 16.75\\text{ units}^2$$</p></div>` 
+            },
+            q3: { 
+                attemptsLeft: 2, 
+                isCorrect: false, 
+                hint: "Hint: A square provides the minimum perimeter for any fixed rectangular area ($P = 4\\sqrt{A}$).", 
+                worked: `<div class="space-y-1"><strong class="text-slate-900 block border-b border-rose-200 pb-1">Step-by-Step Worked Solution:</strong><p>For a rectangle with a given area $A$, perimeter is minimized when the figure is a square ($s = \\sqrt{A}$):</p><p>$$s = \\sqrt{900} = 30\\text{ ft} \\implies P_{\\text{min}} = 4(30) = 120\\text{ ft}$$</p></div>` 
+            },
+            q4: { 
+                attemptsLeft: 2, 
+                isCorrect: false, 
+                hint: "Hint: Use the formula $\\text{Area} = \\text{base} \\times \\text{height}$ using segment lengths $AD$ and $DL$.", 
+                worked: `<div class="space-y-1"><strong class="text-slate-900 block border-b border-rose-200 pb-1">Step-by-Step Worked Solution:</strong><p>Apply the rectangular area formula $\\text{Area} = b \\times h$:</p><p>$$\\text{Area}(ADLI) = AD \\times DL = 15 \\times 11 = 165\\text{ in.}^2$$</p></div>` 
+            },
+            q5: { 
+                attemptsLeft: 2, 
+                isCorrect: false, 
+                hint: "Hint: Determine segment $CD = AD - AC$ first, then multiply by height $DL$.", 
+                worked: `<div class="space-y-1"><strong class="text-slate-900 block border-b border-rose-200 pb-1">Step-by-Step Worked Solution:</strong><p>1. Find base segment $CD = AD - AC = 15 - 13 = 2\\text{ in.}$</p><p>2. Calculate rectangle area:</p><p>$$\\text{Area}(CDLK) = 2 \\times 11 = 22\\text{ in.}^2$$</p></div>` 
+            },
+            q6: { 
+                attemptsLeft: 2, 
+                isCorrect: false, 
+                hint: "Hint: Calculate the area of the entire outer rectangle and subtract the missing upper rectangle areas.", 
+                worked: `<div class="space-y-1"><strong class="text-slate-900 block border-b border-rose-200 pb-1">Step-by-Step Worked Solution:</strong><p>Subtract sub-rectangles from total area $\\text{Area}(ADLI)$:</p><p>$$\\text{Area} = \\text{Area}(ADLI) - \\text{Area}(ABGI) - \\text{Area}(CDLK) = 165 - (13 \\times 5) - 22 = 78\\text{ in.}^2$$</p></div>` 
+            },
+            q7: { 
+                attemptsLeft: 2, 
+                isCorrect: false, 
+                hint: "Hint: Identify base $BC = AC - AB$ and multiply by height $CH$.", 
+                worked: `<div class="space-y-1"><strong class="text-slate-900 block border-b border-rose-200 pb-1">Step-by-Step Worked Solution:</strong><p>1. Find base length $BC = AC - AB = 13 - 5 = 8\\text{ in.}$</p><p>2. Multiply base by height $CH = 4\\text{ in.}:$$</p><p>$$\\text{Area}(BCHG) = 8 \\times 4 = 32\\text{ in.}^2$$</p></div>` 
+            },
+            q8: { 
+                attemptsLeft: 2, 
+                isCorrect: false, 
+                hint: "Hint: The area of a right triangle is $\\frac{1}{2} \\times \\text{base} \\times \\text{height}$.", 
+                worked: `<div class="space-y-1"><strong class="text-slate-900 block border-b border-rose-200 pb-1">Step-by-Step Worked Solution:</strong><p>Connecting segment $ID$ creates right triangle $\\Delta ADI$ cutting rectangle $ADLI$ in half:</p><p>$$\\text{Area}(\\Delta ADI) = \\frac{1}{2} \\times 15 \\times 11 = 82.5\\text{ in.}^2$$</p></div>` 
+            },
+            q9: { 
+                attemptsLeft: 2, 
+                isCorrect: false, 
+                hint: "Hint: Find the horizontal length ($x_2 - x_1$) and vertical height ($y_2 - y_1$) on the coordinate plane.", 
+                worked: `<div class="space-y-1"><strong class="text-slate-900 block border-b border-rose-200 pb-1">Step-by-Step Worked Solution:</strong><p>Find side lengths using coordinate distances:</p><p>$$\\text{Base} = 5 - 0 = 5,\\ \\text{Height} = 2 - 0 = 2 \\implies \\text{Area} = 5 \\times 2 = 10\\text{ units}^2$$</p></div>` 
+            },
+            q10: { 
+                attemptsLeft: 2, 
+                isCorrect: false, 
+                hint: "Hint: Distance between $x = -2$ and $x = 4$ gives the base; distance between $y = -5$ and $y = 3$ gives height.", 
+                worked: `<div class="space-y-1"><strong class="text-slate-900 block border-b border-rose-200 pb-1">Step-by-Step Worked Solution:</strong><p>Determine side lengths across coordinate axes:</p><p>$$\\text{Base} = 4 - (-2) = 6,\\ \\text{Height} = 3 - (-5) = 8 \\implies \\text{Area} = 6 \\times 8 = 48\\text{ units}^2$$</p></div>` 
+            },
+            q11: { 
+                attemptsLeft: 2, 
+                isCorrect: false, 
+                hint: "Hint: Set up perimeter $2b + 2h = 72$ and substitute $b = 3h$ to solve for height first.", 
+                worked: `<div class="space-y-1"><strong class="text-slate-900 block border-b border-rose-200 pb-1">Step-by-Step Worked Solution:</strong><p>Substitute $b = 3h$ into perimeter equation:</p><p>$$2(3h) + 2h = 72 \\implies 8h = 72 \\implies h = 9\\text{ cm},\\ b = 27\\text{ cm}$$</p><p>$$\\text{Area} = 9 \\times 27 = 243\\text{ cm}^2$$</p></div>` 
+            },
+            q12: { 
+                attemptsLeft: 2, 
+                isCorrect: false, 
+                hint: "Hint: Substitute $b = 7h$ into $2b + 2h = 80x$ to solve for $h$ in terms of $x$.", 
+                worked: `<div class="space-y-1"><strong class="text-slate-900 block border-b border-rose-200 pb-1">Step-by-Step Worked Solution:</strong><p>Substitute $b = 7h$ into the perimeter equation:</p><p>$$2(7h) + 2h = 80x \\implies 16h = 80x \\implies h = 5x,\\ b = 35x$$</p><p>$$\\text{Area} = 5x \\times 35x = 175x^2$$</p></div>` 
+            },
+            q13: { 
+                attemptsLeft: 2, 
+                isCorrect: false, 
+                hint: "Hint: Isolate $h$ in $2b + 2h = 100$. Identify the degree of the resulting function.", 
+                worked: `<div class="space-y-1"><strong class="text-slate-900 block border-b border-rose-200 pb-1">Step-by-Step Worked Solution:</strong><p>Simplify perimeter equation:</p><p>$$2b + 2h = 100 \\implies 2h = 100 - 2b \\implies h = 50 - b$$</p><p>Since the degree of the variable is $1$, this is a <strong>Linear Function</strong>.</p></div>` 
+            }
+        };
+
+        let correctCount = 0;
+
+        function updateScore() {
+            correctCount = Object.values(qState).filter(q => q.isCorrect).length;
+            document.getElementById('score-counter').textContent = correctCount;
+        }
+
+        function checkQuestion(qId) {
+            const q = qState[qId];
+            if (q.attemptsLeft <= 0 || q.isCorrect) return;
+
+            const feedbackEl = document.getElementById(`feedback-${qId}`);
+            const statusEl = document.getElementById(`status-${qId}`);
+            const btnEl = document.getElementById(`btn-${qId}`);
+
+            q.attemptsLeft--;
+
+            let isUserCorrect = false;
+
+            if (qId === 'q1') {
+                const val = document.getElementById('input-q1').value.trim();
+                if (val.includes("21")) isUserCorrect = true;
+            } else if (qId === 'q2') {
+                const val = document.getElementById('input-q2').value.trim();
+                if (val.includes("16.75")) isUserCorrect = true;
+            } else if (qId === 'q3') {
+                const val = document.getElementById('input-q3').value.trim();
+                if (val.includes("120")) isUserCorrect = true;
+            } else if (qId === 'q4') {
+                const val = document.getElementById('input-q4').value.trim();
+                if (val.includes("165")) isUserCorrect = true;
+            } else if (qId === 'q5') {
+                const val = document.getElementById('input-q5').value.trim();
+                if (val.includes("22")) isUserCorrect = true;
+            } else if (qId === 'q6') {
+                const val = document.getElementById('input-q6').value.trim();
+                if (val.includes("78")) isUserCorrect = true;
+            } else if (qId === 'q7') {
+                const val = document.getElementById('input-q7').value.trim();
+                if (val.includes("32")) isUserCorrect = true;
+            } else if (qId === 'q8') {
+                const val = document.getElementById('input-q8').value.trim();
+                if (val.includes("82.5")) isUserCorrect = true;
+            } else if (qId === 'q9') {
+                const val = document.getElementById('input-q9').value.trim();
+                if (val.includes("10")) isUserCorrect = true;
+            } else if (qId === 'q10') {
+                const val = document.getElementById('input-q10').value.trim();
+                if (val.includes("48")) isUserCorrect = true;
+            } else if (qId === 'q11') {
+                const a = document.getElementById('input-q11a').value.trim();
+                const b = document.getElementById('input-q11b').value.trim();
+                if ((a.includes("9") && a.includes("27")) && b.includes("243")) isUserCorrect = true;
+            } else if (qId === 'q12') {
+                const a = document.getElementById('input-q12a').value.trim();
+                const b = document.getElementById('input-q12b').value.trim();
+                if ((a.includes("5x") && a.includes("35x")) && b.includes("175")) isUserCorrect = true;
+            } else if (qId === 'q13') {
+                const a = document.getElementById('input-q13a').value.trim();
+                const b = document.getElementById('input-q13b').value.trim().toLowerCase();
+                if (a.includes("50") && b.includes("linear")) isUserCorrect = true;
+            }
+
+            feedbackEl.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-800', 'border-emerald-200', 'bg-rose-50', 'text-rose-800', 'border-rose-200');
+
+            if (isUserCorrect) {
+                q.isCorrect = true;
+                feedbackEl.classList.add('bg-emerald-50', 'text-emerald-800', 'border', 'border-emerald-200');
+                feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600"></i> Correct! Excellent geometry calculation.`;
+                statusEl.textContent = "Status: Correct";
+                btnEl.disabled = true;
+                btnEl.className = "px-5 py-2.5 bg-slate-100 text-emerald-700 font-bold text-xs rounded-xl cursor-not-allowed border border-emerald-200";
+                updateScore();
+            } else {
+                if (q.attemptsLeft > 0) {
+                    feedbackEl.classList.add('bg-rose-50', 'text-rose-800', 'border', 'border-rose-200');
+                    feedbackEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-rose-600"></i> Incorrect. You have 1 attempt remaining. ${q.hint}`;
+                    statusEl.textContent = "Attempts left: 1";
+                } else {
+                    feedbackEl.classList.add('bg-rose-50', 'text-rose-800', 'border', 'border-rose-200');
+                    feedbackEl.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600"></i> Incorrect (0 attempts left). ${q.worked}`;
+                    statusEl.textContent = "Status: Out of attempts";
+                    btnEl.disabled = true;
+                    btnEl.className = "px-5 py-2.5 bg-slate-100 text-slate-400 font-bold text-xs rounded-xl cursor-not-allowed border border-slate-200";
+                    
+                    // Render MathJax equations in solution feedback
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([feedbackEl]).catch((err) => console.log(err));
+                    }
+                }
+            }
+        }
+
+        function generateCompletionModal() {
+            const firstName = document.getElementById('student-first-name').value.trim() || "Anonymous";
+            const lastName = document.getElementById('student-last-name').value.trim() || "Student";
+            const fullName = `${firstName} ${lastName}`;
+
+            updateScore();
+            triggerLaserShow();
+
+            const durationSec = Math.round((Date.now() - moduleStartTime) / 1000);
+            
+            let qBreakdown = [];
+            Object.keys(qState).forEach((key, index) => {
+                const q = qState[key];
+                const statusChar = q.isCorrect ? 'S' : 'F';
+                const atts = 2 - q.attemptsLeft;
+                qBreakdown.push(`Q${index+1}:${statusChar}:${atts}:30s`);
+            });
+
+            const payloadStr = `${lastName}, ${firstName}|${correctCount}/13|${durationSec}s|${qBreakdown.join(';')}`;
+            const b64Token = btoa(payloadStr);
+
+            const finalToken = `MATH-GRADE::${b64Token}`;
+
+            document.getElementById('modal-student-name').textContent = `Student: ${fullName}`;
+            document.getElementById('modal-score-badge').textContent = `Score: ${correctCount} / 13 (${Math.round((correctCount/13)*100)}%)`;
+            document.getElementById('token-display').textContent = finalToken;
+
+            document.getElementById('completion-modal').classList.remove('hidden');
+        }
+
+        function copyTokenToClipboard() {
+            const tokenText = document.getElementById('token-display').textContent;
+            
+            // execCommand fallback for iframe restrictions
+            const tempInput = document.createElement("textarea");
+            tempInput.value = tokenText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            const btn = document.getElementById('copy-token-btn');
+            btn.innerHTML = `<i class="fa-solid fa-check"></i> Token Copied!`;
+            btn.className = "w-full py-2 bg-emerald-600 text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center justify-center gap-2";
+            setTimeout(() => {
+                btn.innerHTML = `<i class="fa-solid fa-copy"></i> Copy Token to Clipboard`;
+                btn.className = "w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center justify-center gap-2";
+            }, 2000);
+        }
+
+        function closeCompletionModal() {
+            document.getElementById('completion-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
