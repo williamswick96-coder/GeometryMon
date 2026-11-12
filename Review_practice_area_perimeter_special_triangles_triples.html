@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saint Peter the Rock Academy - Geometry Practice</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MathJax TeX Rendering -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col font-sans selection:bg-indigo-600 selection:text-white">
+
+    <!-- Header Navigation Bar -->
+    <header class="bg-white/95 border-b border-slate-200 sticky top-0 z-30 backdrop-blur-md shadow-sm">
+        <div class="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-br from-indigo-600 to-purple-800 text-white p-3 rounded-2xl shadow-md shadow-indigo-700/20">
+                    <i class="fa-solid fa-compass-drafting text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-black text-slate-900 leading-tight">Saint Peter the Rock Academy</h1>
+                    <span class="text-xs text-indigo-600 font-bold">Geometry • Area, Perimeter, Special Triangles & Triples</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <div class="bg-slate-100 border border-slate-300 rounded-2xl px-3.5 py-2 flex items-center gap-2 text-xs font-bold text-slate-700">
+                    <i class="fa-solid fa-trophy text-amber-500 text-base"></i>
+                    <span>Score: <strong id="score-counter" class="text-indigo-600 text-sm">0</strong> / 7</span>
+                </div>
+                <button onclick="triggerConfettiCelebration()" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shadow-md shadow-indigo-600/20 transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-sparkles"></i> Test Confetti
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6 space-y-6">
+
+        <!-- Module Intro & Formula Reference Banner -->
+        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-5">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-100 pb-4">
+                <div>
+                    <span class="px-3 py-1 bg-amber-50 text-amber-800 rounded-full text-[11px] font-extrabold border border-amber-200 inline-block mb-1 uppercase tracking-wider">
+                        Geometry Practice Set
+                    </span>
+                    <h2 class="text-2xl font-black text-slate-900">Area, Perimeter, Special Triangles & Pythagorean Triples</h2>
+                    <p class="text-xs text-slate-500 font-medium mt-1">
+                        Solve all 7 geometry problems. Enter exact integer answers or simplified radicals using <code class="bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-bold">sqrt(...)</code> (e.g., <code class="bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700 font-bold">6sqrt(3)</code>).
+                    </p>
+                </div>
+                <span class="px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded-xl text-xs font-extrabold border border-indigo-200 whitespace-nowrap">
+                    7 Practice Problems
+                </span>
+            </div>
+
+            <!-- Inline Reference Formulas Card -->
+            <div class="bg-indigo-50/70 rounded-2xl p-4 border border-indigo-100 space-y-2">
+                <h3 class="text-xs font-extrabold text-indigo-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <i class="fa-solid fa-square-root-variable text-indigo-600"></i> Geometry Toolkit & Inline Formulas
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-700">
+                    <div class="bg-white p-3 rounded-xl border border-indigo-100">
+                        <span class="font-bold text-indigo-800 block mb-0.5">Primitive Pythagorean Triples</span>
+                        \((3, 4, 5),\; (5, 12, 13)\)<br>
+                        \((8, 15, 17),\; (7, 24, 25)\)
+                    </div>
+                    <div class="bg-white p-3 rounded-xl border border-indigo-100">
+                        <span class="font-bold text-indigo-800 block mb-0.5">Special Right Triangles</span>
+                        \(45^\circ\text{-}45^\circ\text{-}90^\circ \implies s : s : s\sqrt{2}\)<br>
+                        \(30^\circ\text{-}60^\circ\text{-}90^\circ \implies s : s\sqrt{3} : 2s\)
+                    </div>
+                    <div class="bg-white p-3 rounded-xl border border-indigo-100">
+                        <span class="font-bold text-indigo-800 block mb-0.5">Polygon Area & Diagonal</span>
+                        Trapezoid: \(A = \frac{b_1 + b_2}{2} \cdot h\)<br>
+                        Square diagonal: \(d = s\sqrt{2}\)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Name Inputs -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1" for="student-first-name">First Name <span class="text-rose-500">*</span></label>
+                    <input type="text" id="student-first-name" placeholder="Enter first name..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 font-medium focus:outline-none focus:border-indigo-600 focus:bg-white transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1" for="student-last-name">Last Name <span class="text-rose-500">*</span></label>
+                    <input type="text" id="student-last-name" placeholder="Enter last name..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 font-medium focus:outline-none focus:border-indigo-600 focus:bg-white transition-all">
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Questions Container -->
+        <div id="questions-container" class="space-y-4"></div>
+
+        <!-- Submit Module Button -->
+        <div class="py-6 flex justify-center">
+            <button onclick="generateCompletionModal()" class="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-800 hover:from-indigo-500 hover:to-purple-500 text-white font-extrabold rounded-2xl text-base shadow-xl shadow-indigo-600/30 transition-all transform hover:scale-105 flex items-center justify-center gap-3">
+                <i class="fa-solid fa-award"></i> Submit Geometry Module & View Verification Token
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Completion Grade Token Modal -->
+    <div id="completion-modal" class="hidden fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-xl w-full p-6 sm:p-8 border border-slate-200 text-center space-y-5 transform transition-all">
+            
+            <div class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-3xl mx-auto border border-indigo-100 shadow-sm">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+
+            <div>
+                <h3 class="text-2xl font-black text-slate-900">Geometry Practice Completed!</h3>
+                <p id="modal-student-name" class="text-sm font-semibold text-indigo-600">Student: Anonymous</p>
+                <span id="modal-score-badge" class="inline-block px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-xs font-bold mt-2">
+                    Score: 0 / 7 (0%)
+                </span>
+            </div>
+
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-left space-y-2">
+                <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Official Grade Verification Token</label>
+                <div class="flex items-center gap-2 bg-white p-3 rounded-xl border border-slate-300 font-mono text-xs font-bold text-slate-800 break-all select-all">
+                    <span id="token-display">MATH-GRADE::...</span>
+                </div>
+                <button onclick="copyTokenToClipboard()" id="copy-token-btn" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-all shadow-md flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-copy"></i> Copy Token to Clipboard
+                </button>
+            </div>
+
+            <div class="bg-indigo-50/70 p-4 rounded-2xl border border-indigo-100 text-left space-y-2 text-xs text-slate-700">
+                <h4 class="font-extrabold text-indigo-900 flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-info"></i> Instructions to Submit to Dr. Swick via Jupiter:
+                </h4>
+                <ol class="list-decimal list-inside space-y-1 font-medium text-slate-600">
+                    <li>Click <strong>"Copy Token to Clipboard"</strong> above.</li>
+                    <li>Log into your <strong>JupiterEd</strong> account.</li>
+                    <li>Open your Math assignment (or send a message to Dr. Swick).</li>
+                    <li>Paste the token string into the submission comment box and click <strong>Turn In / Send</strong>.</li>
+                </ol>
+            </div>
+
+            <div class="pt-2">
+                <button onclick="closeCompletionModal()" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all">
+                    Close Window
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script>
+        const ASSIGNMENT_TITLE = "Geometry - Area Perimeter Special Triangles";
+        let moduleStartTime = Date.now();
+
+        // 7 Geometry Problems
+        const questionsData = [
+            {
+                id: 'q1',
+                num: 1,
+                title: 'Scaled Pythagorean Triple & Area',
+                prompt: 'A right triangle has a hypotenuse of length \\(26\\text{ cm}\\) and one leg of length \\(10\\text{ cm}\\). What is the <strong>area</strong> of the triangle in square centimeters?',
+                formulaNote: 'Inline Formula: Recognize scaled Pythagorean triples \\(k(5, 12, 13)\\), and compute right triangle area \\(A = \\frac{1}{2}ab\\).',
+                placeholder: 'e.g. 96',
+                acceptedAnswers: ['120', '120cm^2', '120sqcm'],
+                hint: 'Hint: Divide both given side lengths by \\(2\\) to spot a primitive Pythagorean triple, find the other leg, and use \\(A = \\frac{1}{2} \\cdot \\text{leg}_1 \\cdot \\text{leg}_2\\).',
+                worked: '<strong>Worked Solution:</strong><br>Notice that \\(10 = 2 \\times 5\\) and \\(26 = 2 \\times 13\\), which is a scaled \\((5, 12, 13)\\) Pythagorean triple.<br>Thus, the missing leg is \\(2 \\times 12 = 24\\text{ cm}\\).<br>Area \\(A = \\frac{1}{2}(10)(24) = 120\\text{ cm}^2\\).'
+            },
+            {
+                id: 'q2',
+                num: 2,
+                title: 'Square Area to Perimeter via 45°-45°-90°',
+                prompt: 'The diagonal of a square has length \\(10\\sqrt{2}\\). What is the <strong>perimeter</strong> of the square?',
+                formulaNote: 'Inline Formula: A square’s diagonal forms two \\(45^\\circ\\text{-}45^\\circ\\text{-}90^\\circ\\) triangles with \\(d = s\\sqrt{2}\\), and perimeter \\(P = 4s\\).',
+                placeholder: 'e.g. 24sqrt(2)',
+                acceptedAnswers: ['40'],
+                hint: 'Hint: Set \\(s\\sqrt{2} = 10\\sqrt{2}\\) to find the side length \\(s\\), then multiply by \\(4\\).',
+                worked: '<strong>Worked Solution:</strong><br>Since the diagonal of a square with side \\(s\\) is \\(s\\sqrt{2}\\), we have \\(s\\sqrt{2} = 10\\sqrt{2} \\implies s = 10\\).<br>Perimeter \\(P = 4s = 4(10) = 40\\).'
+            },
+            {
+                id: 'q3',
+                num: 3,
+                title: 'Isosceles Triangle Altitude & Area',
+                prompt: 'An isosceles triangle has two congruent sides of length \\(17\\) and a base of length \\(16\\). What is the <strong>area</strong> of the triangle?',
+                formulaNote: 'Inline Formula: Dropping an altitude to the base of an isosceles triangle bisects the base into two congruent right triangles of leg \\(\\frac{b}{2}\\), with \\(A = \\frac{1}{2}bh\\).',
+                placeholder: 'e.g. 136',
+                acceptedAnswers: ['120'],
+                hint: 'Hint: The altitude splits the base of \\(16\\) into two segments of length \\(8\\). Use the \\((8, 15, 17)\\) Pythagorean triple to find the height.',
+                worked: '<strong>Worked Solution:</strong><br>Drawing the altitude to the base of \\(16\\) splits it into two right triangles with hypotenuse \\(17\\) and base leg \\(\\frac{16}{2} = 8\\).<br>By the \\((8, 15, 17)\\) Pythagorean triple, the height is \\(h = 15\\).<br>Area \\(A = \\frac{1}{2}(16)(15) = 120\\).'
+            },
+            {
+                id: 'q4',
+                num: 4,
+                title: '30°-60°-90° Triangle Area from Perimeter',
+                prompt: 'In a \\(30^\\circ\\text{-}60^\\circ\\text{-}90^\\circ\\) triangle, the longest side has length \\(12\\). What is the <strong>area</strong> of the triangle in simplest radical form?',
+                formulaNote: 'Inline Formula: In a \\(30^\\circ\\text{-}60^\\circ\\text{-}90^\\circ\\) triangle, \\(\\text{hypotenuse} = 2s\\), \\(\\text{short leg} = s\\), \\(\\text{long leg} = s\\sqrt{3}\\), and \\(A = \\frac{1}{2}(s)(s\\sqrt{3})\\).',
+                placeholder: 'e.g. 24sqrt(3)',
+                acceptedAnswers: ['18sqrt(3)'],
+                hint: 'Hint: The longest side is the hypotenuse \\(2s = 12\\). Find both legs \\(s\\) and \\(s\\sqrt{3}\\), then calculate \\(\\frac{1}{2} \\cdot \\text{leg}_1 \\cdot \\text{leg}_2\\).',
+                worked: '<strong>Worked Solution:</strong><br>Hypotenuse \\(2s = 12 \\implies \\text{short leg } s = 6\\).<br>Long leg \\(= s\\sqrt{3} = 6\\sqrt{3}\\).<br>Area \\(A = \\frac{1}{2}(6)(6\\sqrt{3}) = 18\\sqrt{3}\\).'
+            },
+            {
+                id: 'q5',
+                num: 5,
+                title: 'Isosceles Trapezoid Perimeter',
+                prompt: 'An isosceles trapezoid has parallel bases of lengths \\(10\\) and \\(22\\), and an area of \\(128\\). What is the <strong>perimeter</strong> of the trapezoid?',
+                formulaNote: 'Inline Formula: Trapezoid area \\(A = \\frac{b_1 + b_2}{2} \\cdot h\\). Each horizontal base extension on an isosceles trapezoid is \\(x = \\frac{b_2 - b_1}{2}\\).',
+                placeholder: 'e.g. 48',
+                acceptedAnswers: ['52'],
+                hint: 'Hint: First solve \\(128 = \\frac{10 + 22}{2}h\\) for height \\(h\\). Then drop two altitudes to form right triangles with horizontal leg \\(\\frac{22 - 10}{2} = 6\\).',
+                worked: '<strong>Worked Solution:</strong><br>Find height: \\(128 = \\frac{10 + 22}{2}h = 16h \\implies h = 8\\).<br>Dropping two altitudes creates two right triangles at the ends, each with base leg \\(\\frac{22 - 10}{2} = 6\\) and height \\(8\\).<br>By the \\((6, 8, 10)\\) Pythagorean triple, each slanted leg has length \\(10\\).<br>Perimeter \\(P = 10 + 22 + 10 + 10 = 52\\).'
+            },
+            {
+                id: 'q6',
+                num: 6,
+                title: 'Adjoining Special Right Triangles',
+                prompt: 'Right triangle \\(\\triangle ABC\\) has \\(\\angle B = 90^\\circ\\), \\(\\angle A = 30^\\circ\\), and \\(BC = 6\\). Point \\(D\\) lies on ray \\(AB\\) (on the opposite side of \\(B\\) from \\(A\\)) such that \\(\\angle BDC = 45^\\circ\\). What is the <strong>area</strong> of \\(\\triangle ACD\\) in simplest radical form?',
+                formulaNote: 'Inline Formula: Since \\(B\\) lies between \\(A\\) and \\(D\\), total base \\(AD = AB + BD\\), and \\(A_{\\triangle ACD} = \\frac{1}{2}(AD)(BC)\\).',
+                placeholder: 'e.g. 12 + 12sqrt(3)',
+                acceptedAnswers: ['18+18sqrt(3)', '18sqrt(3)+18'],
+                hint: 'Hint: Use \\(30^\\circ\\text{-}60^\\circ\\text{-}90^\\circ\\) ratios in \\(\\triangle ABC\\) to find \\(AB\\), and \\(45^\\circ\\text{-}45^\\circ\\text{-}90^\\circ\\) ratios in \\(\\triangle DBC\\) to find \\(BD\\).',
+                worked: '<strong>Worked Solution:</strong><br>In \\(30^\\circ\\text{-}60^\\circ\\text{-}90^\\circ\\) triangle \\(\\triangle ABC\\), side opposite \\(30^\\circ\\) is \\(BC = 6\\), so adjacent leg \\(AB = 6\\sqrt{3}\\).<br>In \\(45^\\circ\\text{-}45^\\circ\\text{-}90^\\circ\\) triangle \\(\\triangle DBC\\), legs are equal so \\(BD = BC = 6\\).<br>Total base \\(AD = AB + BD = 6\\sqrt{3} + 6\\).<br>Area \\(A_{\\triangle ACD} = \\frac{1}{2}(6\\sqrt{3} + 6)(6) = 18\\sqrt{3} + 18\\).'
+            },
+            {
+                id: 'q7',
+                num: 7,
+                title: 'Shared Hypotenuse Pythagorean Triples',
+                prompt: 'Convex quadrilateral \\(ABCD\\) has right angles at \\(\\angle B = 90^\\circ\\) and \\(\\angle D = 90^\\circ\\). If \\(AB = 15\\), \\(BC = 20\\), and \\(AD = 7\\), what is the <strong>perimeter</strong> of quadrilateral \\(ABCD\\)?',
+                formulaNote: 'Inline Formula: Diagonal \\(AC\\) is the shared hypotenuse of both right triangles: \\(AC^2 = AB^2 + BC^2 = AD^2 + CD^2\\).',
+                placeholder: 'e.g. 60',
+                acceptedAnswers: ['66'],
+                hint: 'Hint: First find diagonal \\(AC\\) using the \\((15, 20, 25)\\) triple in \\(\\triangle ABC\\), then use \\(AC = 25\\) and \\(AD = 7\\) to find \\(CD\\).',
+                worked: '<strong>Worked Solution:</strong><br>In right \\(\\triangle ABC\\), legs \\(15\\) and \\(20\\) form a \\(5(3, 4, 5)\\) triple, so diagonal \\(AC = 25\\).<br>In right \\(\\triangle ADC\\), hypotenuse \\(AC = 25\\) and leg \\(AD = 7\\) form a \\((7, 24, 25)\\) triple, so \\(CD = 24\\).<br>Perimeter of \\(ABCD = 15 + 20 + 24 + 7 = 66\\).'
+            }
+        ];
+
+        // State Tracking
+        const qState = {};
+        questionsData.forEach(q => {
+            qState[q.id] = {
+                attemptsLeft: 2,
+                isCorrect: false,
+                hint: q.hint,
+                worked: q.worked,
+                acceptedAnswers: q.acceptedAnswers
+            };
+        });
+
+        // Helper: Normalize Radical & Numeric Expressions
+        function canonicalizeMathExpr(str) {
+            let s = str.trim().toLowerCase();
+            if (!s) return '';
+
+            s = s.replace(/square\s*centimeters|sq\.?\s*cm|cm\^2|cm|units\^2|units/g, '')
+                 .replace(/\\text\{[^}]*\}/g, '')
+                 .replace(/\s+/g, '')
+                 .replace(/\\sqrt\{([^}]+)\}/g, 'sqrt($1)')
+                 .replace(/\\sqrt(\d+)/g, 'sqrt($1)')
+                 .replace(/√(\d+)/g, 'sqrt($1)')
+                 .replace(/√\(([^)]+)\)/g, 'sqrt($1)')
+                 .replace(/\*/g, '');
+
+            return s;
+        }
+
+        // Initialize UI Questions
+        function initQuestionsUI() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            questionsData.forEach(q => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-3xl p-6 border border-slate-200 shadow-sm transition-all";
+                card.id = `card-${q.id}`;
+                card.innerHTML = `
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold text-indigo-700 uppercase tracking-wider">Problem ${q.num} • ${q.title}</span>
+                        <span class="text-xs text-slate-400 font-medium" id="status-${q.id}">Attempts left: 2</span>
+                    </div>
+                    <p class="text-sm text-slate-800 mb-2.5 leading-relaxed">${q.prompt}</p>
+                    <div class="bg-slate-50 border border-slate-200/80 rounded-xl px-3.5 py-2 text-xs text-slate-600 mb-3">
+                        <i class="fa-solid fa-calculator text-indigo-500 mr-1"></i> ${q.formulaNote}
+                    </div>
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                        <input type="text" id="input-${q.id}" placeholder="${q.placeholder}" class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-indigo-600 focus:bg-white transition-all font-mono">
+                        <button onclick="checkQuestion('${q.id}')" id="btn-${q.id}" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-indigo-600/20 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Submit Answer
+                        </button>
+                    </div>
+                    <div id="feedback-${q.id}" class="mt-3 hidden text-xs font-semibold rounded-xl p-3"></div>
+                `;
+                container.appendChild(card);
+            });
+
+            if (window.MathJax) window.MathJax.typesetPromise();
+        }
+
+        // Check Question Response
+        function checkQuestion(qId) {
+            const q = qState[qId];
+            if (q.attemptsLeft <= 0 || q.isCorrect) return;
+
+            const inputEl = document.getElementById(`input-${qId}`);
+            const feedbackEl = document.getElementById(`feedback-${qId}`);
+            const statusEl = document.getElementById(`status-${qId}`);
+            const btnEl = document.getElementById(`btn-${qId}`);
+
+            const userCanon = canonicalizeMathExpr(inputEl.value);
+            if (!userCanon) return;
+
+            q.attemptsLeft--;
+            const isUserCorrect = q.acceptedAnswers.some(ans => canonicalizeMathExpr(ans) === userCanon);
+
+            feedbackEl.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-800', 'border-emerald-200', 'bg-rose-50', 'text-rose-800', 'border-rose-200');
+
+            if (isUserCorrect) {
+                q.isCorrect = true;
+                feedbackEl.classList.add('bg-emerald-50', 'text-emerald-800', 'border', 'border-emerald-200');
+                feedbackEl.innerHTML = `<div class="mb-1"><i class="fa-solid fa-circle-check text-emerald-600"></i> Correct! Great problem solving.</div>${q.worked}`;
+                statusEl.textContent = "Status: Correct";
+                btnEl.disabled = true;
+                btnEl.className = "px-5 py-2.5 bg-slate-100 text-emerald-700 font-bold text-xs rounded-xl cursor-not-allowed border border-emerald-200";
+                updateScore();
+                if (window.MathJax) window.MathJax.typesetPromise([feedbackEl]);
+            } else {
+                if (q.attemptsLeft > 0) {
+                    feedbackEl.classList.add('bg-rose-50', 'text-rose-800', 'border', 'border-rose-200');
+                    feedbackEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-rose-600"></i> Incorrect. You have 1 attempt remaining.<br>${q.hint}`;
+                    statusEl.textContent = "Attempts left: 1";
+                    if (window.MathJax) window.MathJax.typesetPromise([feedbackEl]);
+                } else {
+                    feedbackEl.classList.add('bg-rose-50', 'text-rose-800', 'border', 'border-rose-200');
+                    feedbackEl.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600"></i> Incorrect (0 attempts left).<br>${q.worked}`;
+                    statusEl.textContent = "Status: Out of attempts";
+                    btnEl.disabled = true;
+                    btnEl.className = "px-5 py-2.5 bg-slate-100 text-slate-400 font-bold text-xs rounded-xl cursor-not-allowed border border-slate-200";
+                    if (window.MathJax) window.MathJax.typesetPromise([feedbackEl]);
+                }
+            }
+        }
+
+        function updateScore() {
+            const correctCount = Object.values(qState).filter(q => q.isCorrect).length;
+            document.getElementById('score-counter').textContent = correctCount;
+        }
+
+        // ================= CONFETTI & AUDIO CELEBRATION =================
+        let audioCtx = null;
+        function playCelebrationSound() {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                
+                const freqs = [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98];
+                freqs.forEach((freq, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.08);
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime + idx * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.08 + 0.45);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(audioCtx.currentTime + idx * 0.08);
+                    osc.stop(audioCtx.currentTime + idx * 0.08 + 0.45);
+                });
+            } catch (err) {
+                console.warn("Audio Context playback prevented:", err);
+            }
+        }
+
+        function triggerConfettiCelebration() {
+            playCelebrationSound();
+            if (typeof confetti === 'function') {
+                const count = 200;
+                const defaults = { origin: { y: 0.7 } };
+
+                function fire(particleRatio, opts) {
+                    confetti(Object.assign({}, defaults, opts, {
+                        particleCount: Math.floor(count * particleRatio)
+                    }));
+                }
+
+                fire(0.25, { spread: 26, startVelocity: 55, colors: ['#4f46e5', '#7c3aed', '#f59e0b'] });
+                fire(0.2, { spread: 60, colors: ['#10b981', '#06b6d4', '#ec4899'] });
+                fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+                fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2, shapes: ['star'] });
+                fire(0.1, { spread: 120, startVelocity: 45, shapes: ['circle'] });
+
+                setTimeout(() => {
+                    confetti({ particleCount: 80, angle: 60, spread: 70, origin: { x: 0, y: 0.6 } });
+                    confetti({ particleCount: 80, angle: 120, spread: 70, origin: { x: 1, y: 0.6 } });
+                }, 400);
+
+                setTimeout(() => {
+                    confetti({ particleCount: 100, angle: 90, spread: 100, origin: { x: 0.5, y: 0.4 }, scalar: 1.3, shapes: ['star'] });
+                }, 800);
+            }
+        }
+
+        // Generate Grade Token Modal
+        function generateCompletionModal() {
+            const firstName = document.getElementById('student-first-name').value.trim() || "Anonymous";
+            const lastName = document.getElementById('student-last-name').value.trim() || "Student";
+            const fullName = `${firstName} ${lastName}`;
+
+            const correctCount = Object.values(qState).filter(q => q.isCorrect).length;
+            triggerConfettiCelebration();
+
+            const durationSec = Math.round((Date.now() - moduleStartTime) / 1000);
+            
+            let qBreakdown = [];
+            questionsData.forEach((q, index) => {
+                const state = qState[q.id];
+                const statusChar = state.isCorrect ? 'S' : 'F';
+                const atts = 2 - state.attemptsLeft;
+                qBreakdown.push(`Q${index+1}:${statusChar}:${atts}:30s`);
+            });
+
+            // Format: Assignment Title|LastName, FirstName|Score/Total|DurationSec|Breakdown
+            const payloadStr = `${ASSIGNMENT_TITLE}|${lastName}, ${firstName}|${correctCount}/7|${durationSec}s|${qBreakdown.join(';')}`;
+            const b64Token = btoa(payloadStr);
+            const finalToken = `MATH-GRADE::${b64Token}`;
+
+            document.getElementById('modal-student-name').textContent = `Student: ${fullName}`;
+            document.getElementById('modal-score-badge').textContent = `Score: ${correctCount} / 7 (${Math.round((correctCount/7)*100)}%)`;
+            document.getElementById('token-display').textContent = finalToken;
+
+            document.getElementById('completion-modal').classList.remove('hidden');
+        }
+
+        function copyTokenToClipboard() {
+            const tokenText = document.getElementById('token-display').textContent;
+            const textArea = document.createElement("textarea");
+            textArea.value = tokenText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+
+            const btn = document.getElementById('copy-token-btn');
+            btn.innerHTML = `<i class="fa-solid fa-check"></i> Token Copied!`;
+            btn.className = "w-full py-2.5 bg-emerald-600 text-white font-bold text-xs rounded-xl transition-all shadow-md flex items-center justify-center gap-2";
+            setTimeout(() => {
+                btn.innerHTML = `<i class="fa-solid fa-copy"></i> Copy Token to Clipboard`;
+                btn.className = "w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-all shadow-md flex items-center justify-center gap-2";
+            }, 2000);
+        }
+
+        function closeCompletionModal() {
+            document.getElementById('completion-modal').classList.add('hidden');
+        }
+
+        window.onload = function() {
+            initQuestionsUI();
+        };
+    </script>
+</body>
+</html>
