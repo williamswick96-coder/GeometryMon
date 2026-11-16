@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saint Peter the Rock Academy — Geometry Practice: Area, Perimeter, Special Triangles & Triples</title>
+    <!-- MathJax 3 Configuration & Loader -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        /* ==========================================================================
+           TUFTE INFORMATION DESIGN TOKENS & TYPOGRAPHY
+           ========================================================================== */
+        :root {
+            --bg-paper: #fffff8;
+            --ink-primary: #111111;
+            --ink-secondary: #3f3f3c;
+            --ink-muted: #6c6b65;
+            --accent-crimson: #991b1b;
+            --accent-slate: #1e3a8a;
+            --accent-forest: #1f5132;
+            --hairline: #dcdcd2;
+            --ghost-line: #b4b4aa;
+            --font-serif: "ET Book", Palatino, "Palatino Linotype", "Book Antiqua", Georgia, serif;
+            --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --bg-card: #fdfdfd;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            background-color: var(--bg-paper);
+            color: var(--ink-primary);
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-serif);
+            line-height: 1.68;
+            background-color: var(--bg-paper);
+            color: var(--ink-primary);
+        }
+
+        /* ==========================================================================
+           ASYMMETRIC TWO-COLUMN GRID (58% Main Measure / 4% Gutter / 38% Margin)
+           ========================================================================== */
+        .tufte-wrapper {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 2.75rem 2rem 5rem 2rem;
+        }
+
+        .tufte-row {
+            display: grid;
+            grid-template-columns: 58% 38%;
+            column-gap: 4%;
+            align-items: start;
+        }
+
+        .main-col {
+            min-width: 0;
+        }
+
+        .margin-col {
+            min-width: 0;
+            font-size: 0.875rem;
+            line-height: 1.54;
+            color: var(--ink-secondary);
+        }
+
+        /* Header & Institutional Epigraph */
+        header.doc-header {
+            border-bottom: 1px solid var(--hairline);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2.25rem;
+        }
+
+        .institution-kicker {
+            font-size: 0.78rem;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            color: var(--accent-slate);
+            margin-bottom: 0.35rem;
+        }
+
+        h1.doc-title {
+            font-weight: normal;
+            font-size: 2.1rem;
+            line-height: 1.22;
+            margin: 0 0 0.5rem 0;
+            color: var(--ink-primary);
+        }
+
+        .doc-subtitle {
+            font-style: italic;
+            font-size: 1.06rem;
+            color: var(--ink-secondary);
+            margin: 0 0 1.25rem 0;
+        }
+
+        /* Unobtrusive Hairline Student Identification Fields */
+        .student-meta-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.75rem;
+            align-items: baseline;
+            font-size: 0.92rem;
+            color: var(--ink-secondary);
+        }
+
+        .meta-field {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0.45rem;
+        }
+
+        .meta-field label {
+            font-style: italic;
+            color: var(--ink-muted);
+        }
+
+        .tufte-line-input {
+            font-family: var(--font-serif);
+            font-size: 0.95rem;
+            color: var(--ink-primary);
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #777770;
+            padding: 0.1rem 0.25rem;
+            border-radius: 0;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .tufte-line-input:focus {
+            border-bottom: 1.5px solid var(--accent-crimson);
+        }
+
+        .tufte-line-input::placeholder {
+            color: #9e9d95;
+            font-style: italic;
+            font-size: 0.88rem;
+        }
+
+        /* Introductory Exposition & Small Multiples */
+        .exposition-block {
+            margin-bottom: 1.75rem;
+            padding-bottom: 1.15rem;
+            border-bottom: 1px solid var(--hairline);
+        }
+
+        .ref-toggle-link {
+            font-family: var(--font-serif);
+            font-size: 0.86rem;
+            font-style: italic;
+            color: var(--accent-slate);
+            background: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            text-decoration: underline;
+            text-decoration-color: var(--hairline);
+            text-underline-offset: 3px;
+        }
+
+        .ref-toggle-link:hover {
+            color: var(--accent-crimson);
+            text-decoration-color: var(--accent-crimson);
+        }
+
+        .reference-drawer {
+            display: none;
+            margin-top: 1rem;
+        }
+
+        .reference-drawer.open {
+            display: block;
+        }
+
+        /* Minimal Tufte Problem Index Bar */
+        .problem-nav-strip {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.65rem;
+            border-bottom: 1px solid var(--hairline);
+            font-size: 0.88rem;
+        }
+
+        .problem-counter-label {
+            font-style: italic;
+            color: var(--ink-secondary);
+        }
+
+        .problem-index-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: baseline;
+        }
+
+        .index-step-btn {
+            font-family: var(--font-serif);
+            font-size: 0.86rem;
+            font-variant-numeric: oldstyle-nums;
+            background: transparent;
+            border: none;
+            border-bottom: 1.5px solid transparent;
+            padding: 0.05rem 0.2rem;
+            color: var(--ink-muted);
+            cursor: pointer;
+            transition: color 0.15s ease, border-color 0.15s ease;
+        }
+
+        .index-step-btn:hover {
+            color: var(--ink-primary);
+        }
+
+        .index-step-btn.active {
+            color: var(--accent-crimson);
+            border-bottom-color: var(--accent-crimson);
+            font-weight: bold;
+        }
+
+        .index-step-btn.solved {
+            color: var(--accent-forest);
+        }
+
+        .index-step-btn.reviewed {
+            color: var(--accent-slate);
+        }
+
+        /* Problem Typography & Borderless Inline Inputs */
+        section.problem-block {
+            display: none;
+            margin-bottom: 2rem;
+            padding-bottom: 1.75rem;
+            border-bottom: 1px solid var(--hairline);
+        }
+
+        section.problem-block.active-problem {
+            display: grid;
+        }
+
+        h2.problem-heading {
+            font-weight: normal;
+            font-size: 1.35rem;
+            line-height: 1.3;
+            margin: 0 0 0.7rem 0;
+            color: var(--ink-primary);
+        }
+
+        .problem-num {
+            color: var(--accent-crimson);
+            font-variant-numeric: oldstyle-nums;
+            margin-right: 0.35rem;
+        }
+
+        .exercise-tag {
+            font-size: 0.82rem;
+            font-style: italic;
+            color: var(--accent-slate);
+            margin-left: 0.4rem;
+        }
+
+        p {
+            margin: 0 0 0.95rem 0;
+        }
+
+        .step-row {
+            margin: 1.05rem 0;
+            padding-left: 0.85rem;
+            border-left: 1.5px solid var(--hairline);
+        }
+
+        .step-label {
+            font-style: italic;
+            color: var(--accent-slate);
+            margin-right: 0.35rem;
+        }
+
+        .inline-math-prompt {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.55rem;
+            margin-top: 0.5rem;
+        }
+
+        .math-inline-input {
+            font-family: var(--font-mono);
+            font-size: 0.92rem;
+            color: var(--ink-primary);
+            background: transparent;
+            border: none;
+            border-bottom: 1.5px solid #555550;
+            padding: 0.15rem 0.35rem;
+            min-width: 150px;
+            max-width: 230px;
+            border-radius: 0;
+            outline: none;
+            transition: border-color 0.2s ease, color 0.2s ease;
+        }
+
+        .math-inline-input:focus {
+            border-bottom-color: var(--accent-crimson);
+        }
+
+        .math-inline-input:disabled {
+            border-bottom-style: dotted;
+            color: var(--ink-secondary);
+        }
+
+        .math-inline-input::placeholder {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: 0.86rem;
+            color: #9a9990;
+        }
+
+        /* Quiet Hairline Action Buttons */
+        .tufte-action-btn {
+            font-family: var(--font-serif);
+            font-size: 0.86rem;
+            color: var(--accent-crimson);
+            background: transparent;
+            border: 1px solid var(--hairline);
+            padding: 0.2rem 0.65rem;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: background-color 0.15s ease, border-color 0.15s ease;
+        }
+
+        .tufte-action-btn:hover:not(:disabled) {
+            border-color: var(--accent-crimson);
+            background-color: rgba(153, 27, 27, 0.04);
+        }
+
+        .tufte-action-btn:disabled {
+            color: var(--ink-muted);
+            border-color: var(--hairline);
+            cursor: default;
+        }
+
+        /* Next Problem Progression Row */
+        .next-problem-bar {
+            display: none;
+            margin-top: 1.45rem;
+            padding-top: 0.95rem;
+            border-top: 1px dotted var(--hairline);
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .next-problem-bar.visible {
+            display: flex;
+        }
+
+        .next-problem-hint {
+            font-style: italic;
+            font-size: 0.86rem;
+            color: var(--ink-muted);
+        }
+
+        /* ==========================================================================
+           MARGIN SIDENOTES & QUIET VERIFICATION FEEDBACK
+           ========================================================================== */
+        .sidenote-card {
+            margin-bottom: 1.05rem;
+            padding-left: 0.85rem;
+            border-left: 1px solid var(--hairline);
+        }
+
+        .sidenote-num {
+            font-size: 0.75rem;
+            vertical-align: super;
+            color: var(--accent-crimson);
+            margin-right: 0.2rem;
+        }
+
+        .sidenote-title {
+            font-style: italic;
+            color: var(--ink-primary);
+        }
+
+        .margin-feedback {
+            margin-top: 0.75rem;
+            padding: 0.65rem 0.85rem;
+            border-left: 2px solid var(--hairline);
+            font-size: 0.86rem;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .margin-feedback.visible {
+            display: block;
+        }
+
+        .margin-feedback.status-correct {
+            border-left-color: var(--accent-forest);
+            color: var(--ink-primary);
+        }
+
+        .margin-feedback.status-retry {
+            border-left-color: var(--accent-crimson);
+            color: var(--ink-primary);
+        }
+
+        .margin-feedback.status-revealed {
+            border-left-color: var(--accent-slate);
+            color: var(--ink-primary);
+        }
+
+        .feedback-lead {
+            font-weight: bold;
+            font-size: 0.84rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .status-correct .feedback-lead {
+            color: var(--accent-forest);
+        }
+
+        .status-retry .feedback-lead {
+            color: var(--accent-crimson);
+        }
+
+        .status-revealed .feedback-lead {
+            color: var(--accent-slate);
+        }
+
+        .worked-derivation {
+            margin-top: 0.45rem;
+            padding-top: 0.45rem;
+            border-top: 1px dotted var(--hairline);
+            color: var(--ink-secondary);
+            font-size: 0.84rem;
+        }
+
+        /* ==========================================================================
+           INLINE GRADE VERIFICATION RECORD
+           ========================================================================== */
+        .grade-record-section {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1.25rem;
+        }
+
+        .grade-record-section.active-record {
+            display: grid;
+        }
+
+        .grade-record-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 0.85rem;
+        }
+
+        .grade-record-title {
+            font-size: 1.25rem;
+            font-weight: normal;
+            margin: 0;
+        }
+
+        .token-output-panel {
+            display: none;
+            margin-top: 1.15rem;
+            padding: 1.1rem 1.25rem;
+            border: 1px solid var(--hairline);
+            background-color: rgba(220, 220, 210, 0.16);
+        }
+
+        .token-output-panel.visible {
+            display: block;
+        }
+
+        .token-summary-line {
+            font-size: 0.92rem;
+            margin-bottom: 0.65rem;
+            color: var(--ink-primary);
+        }
+
+        .token-code-box {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            line-height: 1.45;
+            color: var(--ink-primary);
+            background: var(--bg-paper);
+            border: 1px solid var(--hairline);
+            padding: 0.65rem 0.8rem;
+            word-break: break-all;
+            user-select: all;
+            margin-bottom: 0.75rem;
+        }
+
+        .copy-confirmation {
+            font-style: italic;
+            font-size: 0.84rem;
+            color: var(--accent-forest);
+            margin-left: 0.65rem;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .copy-confirmation.show {
+            opacity: 1;
+        }
+
+        /* ==========================================================================
+           GOOGLE FORM INTEGRATED CSS CARD MODULE (MATCHING TUFTE AESTHETIC)
+           ========================================================================== */
+        .form-submission-wrapper {
+            margin-top: 4rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--hairline);
+        }
+
+        .form-card-module {
+            background: var(--bg-card);
+            border: 1px solid var(--hairline);
+            border-radius: 4px;
+            padding: 28px;
+            margin: 0 auto;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .card-header {
+            margin-bottom: 18px;
+        }
+
+        .card-title {
+            font-family: var(--font-serif);
+            margin: 0 0 6px 0;
+            color: var(--ink-primary);
+            font-size: 1.25rem;
+            font-weight: normal;
+        }
+
+        .card-subtitle {
+            font-family: var(--font-serif);
+            font-style: italic;
+            margin: 0;
+            color: var(--ink-secondary);
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 375px;
+            border: none;
+            display: block;
+            background: transparent;
+        }
+
+        /* ==========================================================================
+           RESPONSIVE MOBILE COLLAPSE (< 900px)
+           ========================================================================== */
+        .mobile-sidenote-toggle {
+            display: none;
+        }
+
+        @media (max-width: 900px) {
+            section.problem-block {
+                margin-bottom: 1.75rem;
+                padding-bottom: 1.5rem;
+            }
+
+            section.problem-block.active-problem {
+                display: block;
+            }
+
+            .grade-record-section.active-record {
+                display: block;
+            }
+
+            .mobile-sidenote-toggle {
+                display: inline-block;
+                font-family: var(--font-serif);
+                font-size: 0.82rem;
+                font-style: italic;
+                color: var(--accent-slate);
+                background: transparent;
+                border: none;
+                padding: 0.15rem 0;
+                margin-top: 0.35rem;
+                cursor: pointer;
+                text-decoration: underline;
+                text-decoration-color: var(--hairline);
+                text-underline-offset: 3px;
+            }
+
+            .margin-col {
+                margin-top: 0.65rem;
+            }
+
+            .sidenote-collapsible {
+                display: none;
+                margin-top: 0.5rem;
+                padding: 0.55rem 0.75rem;
+                border-left: 1.5px solid var(--accent-slate);
+                background-color: rgba(220, 220, 210, 0.14);
+            }
+
+            .sidenote-collapsible.open {
+                display: block;
+            }
+
+            .margin-feedback.visible {
+                display: block;
+                margin-top: 0.65rem;
+            }
+
+            .form-card-module {
+                padding: 16px;
+            }
+            
+            iframe {
+                height: 420px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="tufte-wrapper">
+
+    <!-- ======================================================================
+         INSTITUTIONAL HEADER & STUDENT IDENTIFICATION
+         ====================================================================== -->
+    <header class="doc-header tufte-row">
+        <div class="main-col">
+            <div class="institution-kicker">Saint Peter the Rock Academy &mdash; Mathematics Department</div>
+            <h1 class="doc-title">Geometry &middot; Area, Perimeter, Special Triangles &amp; Triples</h1>
+            <p class="doc-subtitle">Practice solving geometry problems one problem at a time. Each problem connects the geometric principles to foundational theorems, with helpful notes in the right margin.</p>
+
+            <div class="student-meta-bar">
+                <div class="meta-field">
+                    <label for="student-first-name">First Name:</label>
+                    <input type="text" id="student-first-name" class="tufte-line-input" placeholder="e.g., Clara" autocomplete="given-name" oninput="autoSave()">
+                </div>
+                <div class="meta-field">
+                    <label for="student-last-name">Last Name:</label>
+                    <input type="text" id="student-last-name" class="tufte-line-input" placeholder="e.g., Barton" autocomplete="family-name" oninput="autoSave()">
+                </div>
+            </div>
+        </div>
+
+        <aside class="margin-col">
+            <div class="sidenote-card">
+                <span class="sidenote-title">How This Works.</span> Type your simplified answer directly on the line&mdash;integers or radicals using <code>sqrt(...)</code> (e.g., <code>6sqrt(3)</code>). You have two tries per problem.
+            </div>
+            <div class="sidenote-card" style="margin-top: 1rem; background-color: rgba(220, 220, 210, 0.16); padding: 0.75rem;">
+                <span class="sidenote-title">Auto-Save Status.</span> <span id="save-status-text" style="font-size: 0.8rem; color: var(--ink-muted);">All changes saved locally.</span>
+            </div>
+        </aside>
+    </header>
+
+    <main>
+
+        <!-- ==================================================================
+             COLLAPSIBLE GEOMETRIC REFERENCE
+             ================================================================== -->
+        <section class="exposition-block tufte-row">
+            <div class="main-col">
+                <button type="button" class="ref-toggle-link" id="ref-drawer-btn" onclick="toggleReferenceDrawer()">
+                    &#9656; Quick Review: Pythagorean Triples &amp; Special Right Triangles
+                </button>
+
+                <div class="reference-drawer" id="reference-drawer">
+                    <p style="margin-top: 0.65rem;">
+                        Keep these core geometric relationships in mind:
+                    </p>
+                    <ul style="margin-top: 0.5rem; padding-left: 1.2rem;">
+                        <li><strong>Primitive Triples:</strong> $(3, 4, 5),\; (5, 12, 13),\; (8, 15, 17),\; (7, 24, 25)$.</li>
+                        <li><strong>Special Right Triangles:</strong> $45^\circ\text{-}45^\circ\text{-}90^\circ \implies s : s : s\sqrt{2}$ and $30^\circ\text{-}60^\circ\text{-}90^\circ \implies s : s\sqrt{3} : 2s$.</li>
+                        <li><strong>Polygon Formulas:</strong> Trapezoid Area $A = \frac{b_1 + b_2}{2} \cdot h$, Square Diagonal $d = s\sqrt{2}$.</li>
+                    </ul>
+                </div>
+
+                <button type="button" class="mobile-sidenote-toggle" onclick="toggleMobileNote('note-intro')">&#9656; Note 0: Simplify Radicals</button>
+            </div>
+
+            <aside class="margin-col">
+                <div class="sidenote-card sidenote-collapsible" id="note-intro">
+                    <span class="sidenote-num">0</span>
+                    <span class="sidenote-title">Simplify Radicals.</span> Always write radical answers in simplest form (e.g., <code>18sqrt(3)</code> instead of decimal approximations).
+                </div>
+            </aside>
+        </section>
+
+        <!-- ==================================================================
+             MINIMAL TUFTE SINGLE-PROBLEM NAVIGATION STRIP
+             ================================================================== -->
+        <nav class="problem-nav-strip" aria-label="Exercise navigation">
+            <span class="problem-counter-label" id="problem-counter-text">Problem 1 of 7</span>
+            <div class="problem-index-links" id="problem-index-links">
+                <button type="button" class="index-step-btn active" id="nav-idx-0" onclick="goToProblem(0)">I</button>
+                <button type="button" class="index-step-btn" id="nav-idx-1" onclick="goToProblem(1)">II</button>
+                <button type="button" class="index-step-btn" id="nav-idx-2" onclick="goToProblem(2)">III</button>
+                <button type="button" class="index-step-btn" id="nav-idx-3" onclick="goToProblem(3)">IV</button>
+                <button type="button" class="index-step-btn" id="nav-idx-4" onclick="goToProblem(4)">V</button>
+                <button type="button" class="index-step-btn" id="nav-idx-5" onclick="goToProblem(5)">VI</button>
+                <button type="button" class="index-step-btn" id="nav-idx-6" onclick="goToProblem(6)">VII</button>
+                <button type="button" class="index-step-btn" id="nav-idx-7" onclick="goToProblem(7)">Summary</button>
+            </div>
+        </nav>
+
+        <!-- ==================================================================
+             PROBLEM 1: Scaled Pythagorean Triple & Area
+             ================================================================== -->
+        <section class="problem-block tufte-row active-problem" id="sec-p1">
+            <div class="main-col">
+                <h2 class="problem-heading">
+                    <span class="problem-num">1.</span>Scaled Pythagorean Triple &amp; Area
+                    <span class="exercise-tag">(Problem I)</span>
+                </h2>
+                <p>
+                    A right triangle has a hypotenuse of length $26\text{ cm}$ and one leg of length $10\text{ cm}$. What is the <strong>area</strong> of the triangle in square centimeters?
+                </p>
+
+                <div class="step-row">
+                    <span class="step-label">Your Answer.</span> Enter the area value.
+                    <div class="inline-math-prompt">
+                        <span>$A =$</span>
+                        <input type="text" id="input-p1" class="math-inline-input" placeholder="Enter value..." oninput="autoSave()" onkeydown="if(event.key==='Enter') checkProblem('p1')">
+                        <button type="button" id="btn-p1" class="tufte-action-btn" onclick="checkProblem('p1')">Check Answer</button>
+                    </div>
+                </div>
+
+                <div class="next-problem-bar" id="next-bar-0">
+                    <span class="next-problem-hint">Problem I complete.</span>
+                    <button type="button" class="tufte-action-btn" onclick="goToProblem(1)">Next Problem &rarr;</button>
+                </div>
+
+                <button type="button" class="mobile-sidenote-toggle" onclick="toggleMobileNote('note-p1')">&#9656; Note 1: Pythagorean Triples</button>
+            </div>
+
+            <aside class="margin-col">
+                <div class="sidenote-card sidenote-collapsible" id="note-p1">
+                    <span class="sidenote-num">1</span>
+                    <span class="sidenote-title">Pythagorean triples.</span> Look for scaled multiples of primitive right triangle side lengths.
+                </div>
+                <div class="margin-feedback" id="fb-p1"></div>
+            </aside>
+        </section>
+
+        <!-- ==================================================================
+             PROBLEM 2: Square Area to Perimeter via 45°-45°-90°
+             ================================================================== -->
+        <section class="problem-block tufte-row" id="sec-p2">
+            <div class="main-col">
+                <h2 class="problem-heading">
+                    <span class="problem-num">2.</span>Square Perimeter from Diagonal
+                    <span class="exercise-tag">(Problem II)</span>
+                </h2>
+                <p>
+                    The diagonal of a square has length $10\sqrt{2}$. What is the <strong>perimeter</strong> of the square?
+                </p>
+
+                <div class="step-row">
+                    <span class="step-label">Your Answer.</span> Enter the perimeter value.
+                    <div class="inline-math-prompt">
+                        <span>$P =$</span>
+                        <input type="text" id="input-p2" class="math-inline-input" placeholder="Enter value..." oninput="autoSave()" onkeydown="if(event.key==='Enter') checkProblem('p2')">
+                        <button type="button" id="btn-p2" class="tufte-action-btn" onclick="checkProblem('p2')">Check Answer</button>
+                    </div>
+                </div>
+
+                <div class="next-problem-bar" id="next-bar-1">
+                    <span class="next-problem-hint">Problem II complete.</span>
+                    <button type="button" class="tufte-action-btn" onclick="goToProblem(2)">Next Problem &rarr;</button>
+                </div>
+
+                <button type="button" class="mobile-sidenote-toggle" onclick="toggleMobileNote('note-p2')">&#9656; Note 2: Diagonals</button>
+            </div>
+
+            <aside class="margin-col">
+                <div class="sidenote-card sidenote-collapsible" id="note-p2">
+                    <span class="sidenote-num">2</span>
+                    <span class="sidenote-title">Diagonals.</span> A square's diagonal creates two $45^\circ\text{-}45^\circ\text{-}90^\circ$ right triangles.
+                </div>
+                <div class="margin-feedback" id="fb-p2"></div>
+            </aside>
+        </section>
+
+        <!-- ==================================================================
+             PROBLEM 3: Isosceles Triangle Altitude & Area
+             ================================================================== -->
+        <section class="problem-block tufte-row" id="sec-p3">
+            <div class="main-col">
+                <h2 class="problem-heading">
+                    <span class="problem-num">3.</span>Isosceles Triangle Altitude &amp; Area
+                    <span class="exercise-tag">(Problem III)</span>
+                </h2>
+                <p>
+                    An isosceles triangle has two congruent sides of length $17$ and a base of length $16$. What is the <strong>area</strong> of the triangle?
+                </p>
+
+                <div class="step-row">
+                    <span class="step-label">Your Answer.</span> Enter the area value.
+                    <div class="inline-math-prompt">
+                        <span>$A =$</span>
+                        <input type="text" id="input-p3" class="math-inline-input" placeholder="Enter value..." oninput="autoSave()" onkeydown="if(event.key==='Enter') checkProblem('p3')">
+                        <button type="button" id="btn-p3" class="tufte-action-btn" onclick="checkProblem('p3')">Check Answer</button>
+                    </div>
+                </div>
+
+                <div class="next-problem-bar" id="next-bar-2">
+                    <span class="next-problem-hint">Problem III complete.</span>
+                    <button type="button" class="tufte-action-btn" onclick="goToProblem(3)">Next Problem &rarr;</button>
+                </div>
+
+                <button type="button" class="mobile-sidenote-toggle" onclick="toggleMobileNote('note-p3')">&#9656; Note 3: Altitude Bisects</button>
+            </div>
+
+            <aside class="margin-col">
+                <div class="sidenote-card sidenote-collapsible" id="note-p3">
+                    <span class="sidenote-num">3</span>
+                    <span class="sidenote-title">Altitude bisects.</span> Drawing an altitude to the base of an isosceles triangle splits it into two equal right triangles.
+                </div>
+                <div class="margin-feedback" id="fb-p3"></div>
+            </aside>
+        </section>
+
+        <!-- ==================================================================
+             PROBLEM 4: 30°-60°-90° Triangle Area
+             ================================================================== -->
+        <section class="problem-block tufte-row" id="sec-p4">
+            <div class="main-col">
+                <h2 class="problem-heading">
+                    <span class="problem-num">4.</span>30&deg;-60&deg;-90&deg; Triangle Area
+                    <span class="exercise-tag">(Problem IV)</span>
+                </h2>
+                <p>
+                    In a $30^\circ\text{-}60^\circ\text{-}90^\circ$ triangle, the longest side has length $12$. What is the <strong>area</strong> of the triangle in simplest radical form?
+                </p>
+
+                <div class="step-row">
+                    <span class="step-label">Your Answer.</span> Enter the area value.
+                    <div class="inline-math-prompt">
+                        <span>$A =$</span>
+                        <input type="text" id="input-p4" class="math-inline-input" placeholder="Enter value..." oninput="autoSave()" onkeydown="if(event.key==='Enter') checkProblem('p4')">
+                        <button type="button" id="btn-p4" class="tufte-action-btn" onclick="checkProblem('p4')">Check Answer</button>
+                    </div>
+                </div>
+
+                <div class="next-problem-bar" id="next-bar-3">
+                    <span class="next-problem-hint">Problem IV complete.</span>
+                    <button type="button" class="tufte-action-btn" onclick="goToProblem(4)">Next Problem &rarr;</button>
+                </div>
+
+                <button type="button" class="mobile-sidenote-toggle" onclick="toggleMobileNote('note-p4')">&#9656; Note 4: Side Ratios</button>
+            </div>
+
+            <aside class="margin-col">
+                <div class="sidenote-card sidenote-collapsible" id="note-p4">
+                    <span class="sidenote-num">4</span>
+                    <span class="sidenote-title">Side ratios.</span> Recall that in a $30^\circ\text{-}60^\circ\text{-}90^\circ$ triangle, lengths are in the ratio $s : s\sqrt{3} : 2s$.
+                </div>
+                <div class="margin-feedback" id="fb-p4"></div>
+            </aside>
+        </section>
+
+        <!-- ==================================================================
+             PROBLEM 5: Isosceles Trapezoid Perimeter
+             ================================================================== -->
+        <section class="problem-block tufte-row" id="sec-p5">
+            <div class="main-col">
+                <h2 class="problem-heading">
+                    <span class="problem-num">5.</span>Isosceles Trapezoid Perimeter
+                    <span class="exercise-tag">(Problem V)</span>
+                </h2>
+                <p>
+                    An isosceles trapezoid has parallel bases of lengths $10$ and $22$, and an area of $128$. What is the <strong>perimeter</strong> of the trapezoid?
+                </p>
+
+                <div class="step-row">
+                    <span class="step-label">Your Answer.</span> Enter the perimeter value.
+                    <div class="inline-math-prompt">
+                        <span>$P =$</span>
+                        <input type="text" id="input-p5" class="math-inline-input" placeholder="Enter value..." oninput="autoSave()" onkeydown="if(event.key==='Enter') checkProblem('p5')">
+                        <button type="button" id="btn-p5" class="tufte-action-btn" onclick="checkProblem('p5')">Check Answer</button>
+                    </div>
+                </div>
+
+                <div class="next-problem-bar" id="next-bar-4">
+                    <span class="next-problem-hint">Problem V complete.</span>
+                    <button type="button" class="tufte-action-btn" onclick="goToProblem(5)">Next Problem &rarr;</button>
+                </div>
+
+                <button type="button" class="mobile-sidenote-toggle" onclick="toggleMobileNote('note-p5')">&#9656; Note 5: Trapezoid Altitudes</button>
+            </div>
+
+            <aside class="margin-col">
+                <div class="sidenote-card sidenote-collapsible" id="note-p5">
+                    <span class="sidenote-num">5</span>
+                    <span class="sidenote-title">Trapezoid altitudes.</span> Drop altitudes from the top base vertices to split the ends into right triangles.
+                </div>
+                <div class="margin-feedback" id="fb-p5"></div>
+            </aside>
+        </section>
+
+        <!-- ==================================================================
+             PROBLEM 6: Adjoining Special Right Triangles (Question VI)
+             ================================================================== -->
+        <section class="problem-block tufte-row" id="sec-p6">
+            <div class="main-col">
+                <h2 class="problem-heading">
+                    <span class="problem-num">6.</span>Adjoining Special Right Triangles
+                    <span class="exercise-tag">(Problem VI)</span>
+                </h2>
+                <p>
+                    Right triangle $\triangle ABC$ has $\angle B = 90^\circ$, $\angle A = 30^\circ$, and $BC = 6$. Point $D$ lies on ray $AB$ (on the opposite side of $B$ from $A$) such that $\angle BDC = 45^\circ$. What is the <strong>area</strong> of $\triangle ACD$ in simplest radical form?
+                </p>
+
+                <div class="step-row">
+                    <span class="step-label">Your Answer.</span> Enter the area value.
+                    <div class="inline-math-prompt">
+                        <span>$A =$</span>
+                        <input type="text" id="input-p6" class="math-inline-input" placeholder="Enter value..." oninput="autoSave()" onkeydown="if(event.key==='Enter') checkProblem('p6')">
+                        <button type="button" id="btn-p6" class="tufte-action-btn" onclick="checkProblem('p6')">Check Answer</button>
+                    </div>
+                </div>
+
+                <div class="next-problem-bar" id="next-bar-5">
+                    <span class="next-problem-hint">Problem VI complete.</span>
+                    <button type="button" class="tufte-action-btn" onclick="goToProblem(6)">Next Problem &rarr;</button>
+                </div>
+
+                <button type="button" class="mobile-sidenote-toggle" onclick="toggleMobileNote('note-p6')">&#9656; Note 6: Combined Triangles</button>
+            </div>
+
+            <aside class="margin-col">
+                <div class="sidenote-card sidenote-collapsible" id="note-p6">
+                    <span class="sidenote-num">6</span>
+                    <span class="sidenote-title">Combined triangles.</span> Solve each right triangle separately to find the total base length of $\triangle ACD$.
+                </div>
+                <div class="margin-feedback" id="fb-p6"></div>
+            </aside>
+        </section>
+
+        <!-- ==================================================================
+             PROBLEM 7: Shared Hypotenuse Pythagorean Triples
+             ================================================================== -->
+        <section class="problem-block tufte-row" id="sec-p7">
+            <div class="main-col">
+                <h2 class="problem-heading">
+                    <span class="problem-num">7.</span>Shared Hypotenuse Triples
+                    <span class="exercise-tag">(Problem VII)</span>
+                </h2>
+                <p>
+                    Convex quadrilateral $ABCD$ has right angles at $\angle B = 90^\circ$ and $\angle D = 90^\circ$. If $AB = 15$, $BC = 20$, and $AD = 7$, what is the <strong>perimeter</strong> of quadrilateral $ABCD$?
+                </p>
+
+                <div class="step-row">
+                    <span class="step-label">Your Answer.</span> Enter the perimeter value.
+                    <div class="inline-math-prompt">
+                        <span>$P =$</span>
+                        <input type="text" id="input-p7" class="math-inline-input" placeholder="Enter value..." oninput="autoSave()" onkeydown="if(event.key==='Enter') checkProblem('p7')">
+                        <button type="button" id="btn-p7" class="tufte-action-btn" onclick="checkProblem('p7')">Check Answer</button>
+                    </div>
+                </div>
+
+                <div class="next-problem-bar" id="next-bar-6">
+                    <span class="next-problem-hint">All 7 problems completed.</span>
+                    <button type="button" class="tufte-action-btn" onclick="goToProblem(7)">Finish &amp; Generate Grade Token &rarr;</button>
+                </div>
+
+                <button type="button" class="mobile-sidenote-toggle" onclick="toggleMobileNote('note-p7')">&#9656; Note 7: Shared Diagonal</button>
+            </div>
+
+            <aside class="margin-col">
+                <div class="sidenote-card sidenote-collapsible" id="note-p7">
+                    <span class="sidenote-num">7</span>
+                    <span class="sidenote-title">Shared diagonal.</span> The diagonal $AC$ serves as the hypotenuse for both right triangles.
+                </div>
+                <div class="margin-feedback" id="fb-p7"></div>
+            </aside>
+        </section>
+
+        <!-- ==================================================================
+             INLINE GRADE VERIFICATION RECORD
+             ================================================================== -->
+        <section class="grade-record-section tufte-row" id="sec-grade-record">
+            <div class="main-col">
+                <div class="grade-record-header">
+                    <h2 class="grade-record-title">Assignment Summary &amp; Grade Token</h2>
+                </div>
+                <p style="font-size: 0.92rem; color: var(--ink-secondary);">
+                    Your grade token has been generated below using the name entered at the top of the worksheet. Copy this token to submit your assignment.
+                </p>
+
+                <div class="token-output-panel visible" id="grade-token-panel">
+                    <div class="token-summary-line" id="token-summary-text"></div>
+                    <div class="token-code-box" id="token-string-box">MATH-GRADE::...</div>
+                    <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.75rem;">
+                        <button type="button" class="tufte-action-btn" onclick="copyVerificationToken()">Copy Grade Token</button>
+                        <button type="button" class="tufte-ghost-btn" onclick="renderInlineGradeRecord()">Refresh Grade Token</button>
+                        <span class="copy-confirmation" id="copy-confirm-msg">Copied to clipboard!</span>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="margin-col">
+                <div class="sidenote-card">
+                    <span class="sidenote-title">How to Turn In.</span> Copy the entire <code>MATH-GRADE::...</code> code and paste it into the submission card below.
+                </div>
+            </aside>
+        </section>
+
+        <!-- ==================================================================
+             INTEGRATED GOOGLE FORM CSS CARD MODULE
+             ================================================================== -->
+        <div class="form-submission-wrapper">
+            <div class="form-card-module">
+                <div class="card-header">
+                    <h3 class="card-title">Homework Grade Token Submission</h3>
+                    <p class="card-subtitle">Enter your generated grade token below to log your assignment credit.</p>
+                </div>
+                
+                <div class="iframe-container">
+                    <iframe 
+                        src="https://docs.google.com/forms/d/e/1FAIpQLSc0W7fmAdq4aqdj7EnpHUwUtPaEytTZEi2zrik5QBsSMHIIvw/viewform?embedded=true" 
+                        width="640" 
+                        height="375" 
+                        frameborder="0" 
+                        marginheight="0" 
+                        marginwidth="0"
+                        title="Homework Grade Token Form">
+                        Loading…
+                    </iframe>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script>
+    /* ==========================================================================
+       MODULE CURRICULUM DATA & STEP STATE
+       ========================================================================== */
+    const ASSIGNMENT_TITLE = "Geometry - Area Perimeter Special Triangles";
+    const moduleStartTime = Date.now();
+    let currentViewIndex = 0; 
+    const sectionIds = ['sec-p1', 'sec-p2', 'sec-p3', 'sec-p4', 'sec-p5', 'sec-p6', 'sec-p7', 'sec-grade-record'];
+
+    const problemBank = {
+        p1: {
+            problemNum: 1,
+            label: "Q1",
+            accepted: ['120', '120cm^2', '120sqcm'],
+            hint: "Divide both given side lengths by $2$ to spot a primitive Pythagorean triple, find the other leg, and use $A = \\frac{1}{2} \\cdot \\text{leg}_1 \\cdot \\text{leg}_2$.",
+            derivation: "Notice that $10 = 2 \\times 5$ and $26 = 2 \\times 13$, which is a scaled $(5, 12, 13)$ Pythagorean triple.<br>Thus, the missing leg is $2 \\times 12 = 24\\text{ cm}$.<br>Area $A = \\frac{1}{2}(10)(24) = 120\\text{ cm}^2$."
+        },
+        p2: {
+            problemNum: 2,
+            label: "Q2",
+            accepted: ['40'],
+            hint: "Set $s\\sqrt{2} = 10\\sqrt{2}$ to find the side length $s$, then multiply by $4$.",
+            derivation: "Since the diagonal of a square with side $s$ is $s\\sqrt{2}$, we have $s\\sqrt{2} = 10\\sqrt{2} \\implies s = 10$.<br>Perimeter $P = 4s = 4(10) = 40$."
+        },
+        p3: {
+            problemNum: 3,
+            label: "Q3",
+            accepted: ['120'],
+            hint: "The altitude splits the base of $16$ into two segments of length $8$. Use the $(8, 15, 17)$ Pythagorean triple to find the height.",
+            derivation: "Drawing the altitude to the base of $16$ splits it into two right triangles with hypotenuse $17$ and base leg $\\frac{16}{2} = 8$.<br>By the $(8, 15, 17)$ Pythagorean triple, the height is $h = 15$.<br>Area $A = \\frac{1}{2}(16)(15) = 120$."
+        },
+        p4: {
+            problemNum: 4,
+            label: "Q4",
+            accepted: ['18sqrt(3)'],
+            hint: "The longest side is the hypotenuse $2s = 12$. Find both legs $s$ and $s\\sqrt{3}$, then calculate $\\frac{1}{2} \\cdot \\text{leg}_1 \\cdot \\text{leg}_2$.",
+            derivation: "Hypotenuse $2s = 12 \\implies \\text{short leg } s = 6$.<br>Long leg $= s\\sqrt{3} = 6\\sqrt{3}$.<br>Area $A = \\frac{1}{2}(6)(6\\sqrt{3}) = 18\\sqrt{3}$."
+        },
+        p5: {
+            problemNum: 5,
+            label: "Q5",
+            accepted: ['52'],
+            hint: "First solve $128 = \\frac{10 + 22}{2}h$ for height $h$. Then drop two altitudes to form right triangles with horizontal leg $\\frac{22 - 10}{2} = 6$.",
+            derivation: "Find height: $128 = \\frac{10 + 22}{2}h = 16h \\implies h = 8$.<br>Dropping two altitudes creates two right triangles at the ends, each with base leg $\\frac{22 - 10}{2} = 6$ and height $8$.<br>By the $(6, 8, 10)$ Pythagorean triple, each slanted leg has length $10$.<br>Perimeter $P = 10 + 22 + 10 + 10 = 52$."
+        },
+        p6: {
+            problemNum: 6,
+            label: "Q6",
+            accepted: ['18+18sqrt(3)', '18sqrt(3)+18'],
+            hint: "Use $30^\circ\text{-}60^\circ\text{-}90^\circ$ ratios in $\\triangle ABC$ to find $AB$, and $45^\circ\text{-}45^\circ\text{-}90^\circ$ ratios in $\\triangle DBC$ to find $BD$.",
+            derivation: "In $30^\circ\text{-}60^\circ\text{-}90^\circ$ triangle $\\triangle ABC$, side opposite $30^\circ$ is $BC = 6$, so adjacent leg $AB = 6\\sqrt{3}$.<br>In $45^\circ\text{-}45^\circ\text{-}90^\circ$ triangle $\\triangle DBC$, legs are equal so $BD = BC = 6$.<br>Total base $AD = AB + BD = 6\\sqrt{3} + 6$.<br>Area $A_{\\triangle ACD} = \\frac{1}{2}(6\\sqrt{3} + 6)(6) = 18\\sqrt{3} + 18$."
+        },
+        p7: {
+            problemNum: 7,
+            label: "Q7",
+            accepted: ['66'],
+            hint: "First find diagonal $AC$ using the $(15, 20, 25)$ triple in $\\triangle ABC$, then use $AC = 25$ and $AD = 7$ to find $CD$.",
+            derivation: "In right $\\triangle ABC$, legs $15$ and $20$ form a $5(3, 4, 5)$ triple, so diagonal $AC = 25$.<br>In right $\\triangle ADC$, hypotenuse $AC = 25$ and leg $AD = 7$ form a $(7, 24, 25)$ triple, so $CD = 24$.<br>Perimeter of $ABCD = 15 + 20 + 24 + 7 = 66$."
+        }
+    };
+
+    const stepState = {};
+    Object.keys(problemBank).forEach(key => {
+        stepState[key] = {
+            attempts: [],
+            status: 'active',
+            gaveUp: false
+        };
+    });
+
+    /* ==========================================================================
+       LOCAL BROWSER AUTO-SAVE PERSISTENCE ROUTINES
+       ========================================================================== */
+    let saveTimeout;
+
+    function autoSave() {
+        const statusEl = document.getElementById('save-status-text');
+        if (statusEl) {
+            statusEl.textContent = 'Unsaved changes...';
+            statusEl.style.color = 'var(--accent-crimson)';
+        }
+
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(() => {
+            const formData = {
+                firstName: document.getElementById('student-first-name').value,
+                lastName: document.getElementById('student-last-name').value,
+                currentViewIndex: currentViewIndex,
+                stepState: stepState,
+                inputs: {
+                    p1: document.getElementById('input-p1').value,
+                    p2: document.getElementById('input-p2').value,
+                    p3: document.getElementById('input-p3').value,
+                    p4: document.getElementById('input-p4').value,
+                    p5: document.getElementById('input-p5').value,
+                    p6: document.getElementById('input-p6').value,
+                    p7: document.getElementById('input-p7').value
+                },
+                timestamp: new Date().toLocaleTimeString()
+            };
+
+            localStorage.setItem('spr_geometry_5_6_draft', JSON.stringify(formData));
+
+            if (statusEl) {
+                statusEl.textContent = 'Auto-saved locally at ' + formData.timestamp;
+                statusEl.style.color = 'var(--ink-secondary)';
+            }
+        }, 800);
+    }
+
+    function restoreAutoSavedData() {
+        const saved = localStorage.getItem('spr_geometry_5_6_draft');
+        if (!saved) return;
+
+        try {
+            const data = JSON.parse(saved);
+            
+            if (data.firstName) document.getElementById('student-first-name').value = data.firstName;
+            if (data.lastName) document.getElementById('student-last-name').value = data.lastName;
+
+            if (data.inputs) {
+                Object.keys(data.inputs).forEach(k => {
+                    const el = document.getElementById(`input-${k}`);
+                    if (el && data.inputs[k] !== undefined) {
+                        el.value = data.inputs[k];
+                    }
+                });
+            }
+
+            if (data.stepState) {
+                Object.keys(data.stepState).forEach(k => {
+                    if (stepState[k] && data.stepState[k]) {
+                        stepState[k] = data.stepState[k];
+                        if (stepState[k].status !== 'active') {
+                            lockControls(k);
+                            const meta = problemBank[k];
+                            if (stepState[k].status === 'correct') {
+                                renderFeedback(k, 'status-correct', 'Previously solved.', 'Restored from local storage draft.', meta.derivation);
+                                updateProblemCompletionUI(meta.problemNum - 1);
+                            } else if (stepState[k].status === 'failed') {
+                                renderFeedback(k, 'status-revealed', 'Attempts completed.', 'Restored from local storage draft.', meta.derivation);
+                                updateProblemCompletionUI(meta.problemNum - 1);
+                            }
+                        }
+                    }
+                });
+            }
+
+            if (typeof data.currentViewIndex === 'number') {
+                goToProblem(data.currentViewIndex);
+            }
+
+            const statusEl = document.getElementById('save-status-text');
+            if (statusEl && data.timestamp) {
+                statusEl.textContent = 'Restored draft (' + data.timestamp + ')';
+                statusEl.style.color = 'var(--ink-secondary)';
+            }
+        } catch (e) {
+            console.error('Error restoring auto-saved geometry draft', e);
+        }
+    }
+
+    function toggleReferenceDrawer() {
+        const drawer = document.getElementById('reference-drawer');
+        const btn = document.getElementById('ref-drawer-btn');
+        const isOpen = drawer.classList.toggle('open');
+        btn.innerHTML = isOpen
+            ? '&#9662; Hide Pythagorean Triples & Special Right Triangles Review'
+            : '&#9656; Quick Review: Pythagorean Triples & Special Right Triangles';
+        if (isOpen && window.MathJax && window.MathJax.typesetPromise) {
+            window.MathJax.typesetPromise([drawer]);
+        }
+    }
+
+    function goToProblem(idx) {
+        currentViewIndex = idx;
+        autoSave();
+
+        sectionIds.forEach((secId, i) => {
+            const el = document.getElementById(secId);
+            if (!el) return;
+            if (secId === 'sec-grade-record') {
+                el.classList.toggle('active-record', i === idx);
+            } else {
+                el.classList.toggle('active-problem', i === idx);
+            }
+        });
+
+        for (let i = 0; i < sectionIds.length; i++) {
+            const navBtn = document.getElementById(`nav-idx-${i}`);
+            if (navBtn) {
+                navBtn.classList.toggle('active', i === idx);
+            }
+        }
+
+        const counterText = document.getElementById('problem-counter-text');
+        if (idx < 7) {
+            counterText.textContent = `Problem ${['I','II','III','IV','V','VI','VII'][idx]} of VII`;
+        } else {
+            counterText.textContent = `Assignment Summary & Grade Token`;
+            renderInlineGradeRecord();
+        }
+
+        if (window.MathJax && window.MathJax.typesetPromise) {
+            const activeEl = document.getElementById(sectionIds[idx]);
+            window.MathJax.typesetPromise([activeEl]);
+        }
+    }
+
+    function updateProblemCompletionUI(problemIndex) {
+        const stepGroups = [['p1'], ['p2'], ['p3'], ['p4'], ['p5'], ['p6'], ['p7']];
+        const steps = stepGroups[problemIndex];
+        if (!steps) return;
+
+        const allDone = steps.every(id => stepState[id].status !== 'active');
+        const allCorrect = steps.every(id => stepState[id].status === 'correct');
+
+        if (allDone) {
+            const nextBar = document.getElementById(`next-bar-${problemIndex}`);
+            if (nextBar) nextBar.classList.add('visible');
+
+            const navBtn = document.getElementById(`nav-idx-${problemIndex}`);
+            if (navBtn) {
+                navBtn.classList.remove('solved', 'reviewed');
+                navBtn.classList.add(allCorrect ? 'solved' : 'reviewed');
+            }
+        }
+    }
+
+    function canonicalizeExpr(raw) {
+        let s = raw.trim().toLowerCase();
+        if (!s) return '';
+        s = s.replace(/square\s*centimeters|sq\.?\s*cm|cm\^2|cm|units\^2|units/g, '')
+             .replace(/\\text\{[^}]*\}/g, '')
+             .replace(/\s+/g, '')
+             .replace(/\\sqrt\{([^}]+)\}/g, 'sqrt($1)')
+             .replace(/\\sqrt(\d+)/g, 'sqrt($1)')
+             .replace(/√(\d+)/g, 'sqrt($1)')
+             .replace(/√\(([^)]+)\)/g, 'sqrt($1)')
+             .replace(/\*/g, '');
+        return s;
+    }
+
+    function checkProblem(stepId) {
+        const state = stepState[stepId];
+        const meta = problemBank[stepId];
+        if (state.status !== 'active') return;
+
+        const inputEl = document.getElementById(`input-${stepId}`);
+        const rawVal = inputEl.value.trim();
+        if (!rawVal) return;
+
+        const userCanon = canonicalizeExpr(rawVal);
+        const isCorrect = meta.accepted.some(ans => canonicalizeExpr(ans) === userCanon);
+
+        state.attempts.push(rawVal);
+
+        if (isCorrect) {
+            state.status = 'correct';
+            lockControls(stepId);
+            const praiseLead = state.attempts.length === 1
+                ? 'Correct! Nice work.'
+                : 'Correct on your second try!';
+            renderFeedback(stepId, 'status-correct',
+                praiseLead,
+                `Your answer <code>${escapeHtml(rawVal)}</code> is right.`,
+                meta.derivation
+            );
+            updateProblemCompletionUI(meta.problemNum - 1);
+        } else if (state.attempts.length === 1) {
+            renderFeedback(stepId, 'status-retry',
+                'Not quite—check the margin note and try once more.',
+                meta.hint,
+                null
+            );
+        } else {
+            state.status = 'failed';
+            lockControls(stepId);
+            renderFeedback(stepId, 'status-revealed',
+                'Out of attempts—review the solution below.',
+                `Your tries: <code>${state.attempts.map(escapeHtml).join(', ')}</code>.`,
+                meta.derivation
+            );
+            updateProblemCompletionUI(meta.problemNum - 1);
+        }
+        autoSave();
+    }
+
+    function lockControls(stepId) {
+        const inp = document.getElementById(`input-${stepId}`);
+        const btn = document.getElementById(`btn-${stepId}`);
+        if (inp) inp.disabled = true;
+        if (btn) btn.disabled = true;
+    }
+
+    function renderFeedback(stepId, cssClass, leadText, bodyHtml, derivationHtml) {
+        const fbEl = document.getElementById(`fb-${stepId}`);
+        if (!fbEl) return;
+        fbEl.className = `margin-feedback visible ${cssClass}`;
+        fbEl.innerHTML = `
+            <div class="feedback-lead">${leadText}</div>
+            <div>${bodyHtml}</div>
+            ${derivationHtml ? `<div class="worked-derivation">${derivationHtml}</div>` : ''}
+        `;
+        if (window.MathJax && window.MathJax.typesetPromise) {
+            window.MathJax.typesetPromise([fbEl]);
+        }
+    }
+
+    function toggleMobileNote(noteId) {
+        const el = document.getElementById(noteId);
+        if (el) el.classList.open = el.classList.toggle('open');
+    }
+
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    function renderInlineGradeRecord() {
+        const firstName = document.getElementById('student-first-name').value.trim() || 'Anonymous';
+        const lastName = document.getElementById('student-last-name').value.trim() || 'Student';
+
+        const p1Ok = stepState.p1.status === 'correct';
+        const p2Ok = stepState.p2.status === 'correct';
+        const p3Ok = stepState.p3.status === 'correct';
+        const p4Ok = stepState.p4.status === 'correct';
+        const p5Ok = stepState.p5.status === 'correct';
+        const p6Ok = stepState.p6.status === 'correct';
+        const p7Ok = stepState.p7.status === 'correct';
+
+        const solvedProblems = [p1Ok, p2Ok, p3Ok, p4Ok, p5Ok, p6Ok, p7Ok].filter(Boolean).length;
+        const durationSec = Math.max(1, Math.round((Date.now() - moduleStartTime) / 1000));
+
+        const keys = Object.keys(problemBank);
+        const breakdown = keys.map(k => {
+            const st = stepState[k];
+            const label = problemBank[k].label;
+            const statusChar = st.status === 'correct' ? 'S' : 'F';
+            const attCount = st.attempts.length;
+            const ansList = attCount > 0
+                ? st.attempts.map(a => a.replace(/[|;:]/g, '_')).join(',')
+                : 'none';
+            return `${label}:${statusChar}:att=${attCount}:ans=[${ansList}]`;
+        });
+
+        const payload = `${ASSIGNMENT_TITLE}|${lastName}, ${firstName}|${solvedProblems}/7|${durationSec}s|${breakdown.join(';')}`;
+        const encodedToken = `MATH-GRADE::${btoa(payload)}`;
+
+        document.getElementById('token-summary-text').innerHTML =
+            `<strong>Student:</strong> ${escapeHtml(firstName)} ${escapeHtml(lastName)} &middot; <strong>Score:</strong> ${solvedProblems} / 7 (${Math.round((solvedProblems / 7) * 100)}%) &middot; <strong>Time:</strong> ${durationSec}s`;
+        document.getElementById('token-string-box').textContent = encodedToken;
+        document.getElementById('token-output-panel').classList.add('visible');
+    }
+
+    function copyVerificationToken() {
+        const tokenStr = document.getElementById('token-string-box').textContent;
+        const tempArea = document.createElement('textarea');
+        tempArea.value = tokenStr;
+        document.body.appendChild(tempArea);
+        tempArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempArea);
+
+        const confirmEl = document.getElementById('copy-confirm-msg');
+        confirmEl.classList.add('show');
+        setTimeout(() => confirmEl.classList.remove('show'), 2200);
+    }
+
+    window.onload = function () {
+        restoreAutoSavedData();
+        if (currentViewIndex === 0 && !localStorage.getItem('spr_geometry_5_6_draft')) {
+            goToProblem(0);
+        }
+        if (window.MathJax && window.MathJax.typesetPromise) {
+            window.MathJax.typesetPromise();
+        }
+    };
+</script>
+
+</body>
+</html>
